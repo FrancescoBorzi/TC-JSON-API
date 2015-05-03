@@ -19,6 +19,20 @@ Route::get('/creature/template/{name}/{subname?}', function($name, $subname = nu
 
 });
 
+Route::get('/creature/spawn/id/{id}', function($id) {
+  $results = DB::select("SELECT * FROM creature WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/creature/spawn/guid/{id}', function($id) {
+  $results = DB::select("SELECT * FROM creature WHERE guid = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 
 /* Loot templates */
 
