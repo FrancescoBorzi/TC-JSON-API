@@ -34,12 +34,12 @@ Route::get('/creature/spawn/id/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
-Route::get('/creature/spawn/guid/{id}', function($id) {
-  $results = DB::select("SELECT * FROM creature WHERE guid = ?", [$id]);
+Route::get('/creature/spawn/guid/{guid}', function($guid) {
+  $results = DB::select("SELECT * FROM creature WHERE guid = ?", [$guid]);
 
   return Response::json($results);
 })
-  ->where('id', '[0-9]+');
+  ->where('guid', '[0-9]+');
 
 Route::get('/creature/queststarter/id/{id}', function($id) {
   $results = DB::select("SELECT * FROM creature_queststarter WHERE id = ?", [$id]);
