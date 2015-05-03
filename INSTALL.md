@@ -28,6 +28,18 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 `cd TC-JSON-API`
 `composer install`
 
+- Copy the file **.env.example** to **.env**
+
+- Open **.env** with a text editor and set properly DB_* parameters, example:
+
+DB_HOST=localhost
+
+DB_DATABASE=world
+
+DB_USERNAME=root
+
+DB_PASSWORD=password
+
 - Ensure that the entire folder TC-JSON-API (including all its files and subfolders) have the proper file permissions.
 
 If everything is ok you should be able to correctly open [http://localhost/TC-JSON-API/public/index.php](http://localhost/TC-JSON-API/public/index.php).
