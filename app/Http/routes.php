@@ -19,7 +19,6 @@ Route::get('/creature/template/{name}/{subname?}', function($name, $subname = nu
   $results = DB::select($query);
 
   return Response::json($results);
-
 });
 
 Route::get('/creature/spawn/id/{id}', function($id) {
@@ -53,7 +52,6 @@ Route::get('/gameobject/template/{name}', function($name) {
   $results = DB::select($query);
 
   return Response::json($results);
-
 });
 
 Route::get('/gameobject/spawn/id/{id}', function($id) {
@@ -69,6 +67,25 @@ Route::get('/gameobject/spawn/guid/{id}', function($id) {
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
+
+
+/* Item */
+
+Route::get('/item/template/{id}', function($id) {
+  $results = DB::select("SELECT * FROM item_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/item/template/{name}', function($name) {
+
+  $query = sprintf("SELECT * FROM item_template WHERE name LIKE '%%%s%%'", $name);
+
+  $results = DB::select($query);
+
+  return Response::json($results);
+});
 
 
 /* Loot templates */
