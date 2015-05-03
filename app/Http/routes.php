@@ -88,6 +88,27 @@ Route::get('/item/template/{name}', function($name) {
 });
 
 
+/* Quest */
+
+Route::get('/quest/template/{id}', function($id) {
+  $results = DB::select("SELECT * FROM quest_template WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/template/{name}', function($name) {
+
+  $name = DB::connection()->getPdo()->quote("%" . $name . "%");
+
+  $query = sprintf("SELECT * FROM quest_template WHERE title LIKE %s", $name);
+
+  $results = DB::select($query);
+
+  return Response::json($results);
+});
+
+
 /* Loot templates */
 
 Route::get('/loot/creature/{id}', function($id) {
