@@ -1,6 +1,6 @@
 <?php
 
-/* Creature */
+/* Creatures */
 
 Route::get('/creature/template/{id}', function($id) {
   $results = DB::select("SELECT * FROM creature_template WHERE entry = ?", [$id]);
@@ -70,7 +70,7 @@ Route::get('/creature/questender/quest/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 
-/* Gameobject */
+/* Gameobjects */
 
 Route::get('/gameobject/template/{id}', function($id) {
   $results = DB::select("SELECT * FROM gameobject_template WHERE entry = ?", [$id]);
@@ -105,7 +105,7 @@ Route::get('/gameobject/spawn/guid/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 
-/* Item */
+/* Items */
 
 Route::get('/item/template/{id}', function($id) {
   $results = DB::select("SELECT * FROM item_template WHERE entry = ?", [$id]);
@@ -126,7 +126,7 @@ Route::get('/item/template/{name}', function($name) {
 });
 
 
-/* Quest */
+/* Quests */
 
 Route::get('/quest/template/{id}', function($id) {
   $results = DB::select("SELECT * FROM quest_template WHERE id = ?", [$id]);
