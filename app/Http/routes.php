@@ -34,6 +34,40 @@ Route::get('/creature/spawn/guid/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 
+/* Gameobject */
+
+Route::get('/gameobject/template/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/gameobject/template/{name}', function($name) {
+
+  $query = sprintf("SELECT * FROM gameobject_template WHERE name LIKE '%%%s%%'", $name);
+
+  $results = DB::select($query);
+
+  return Response::json($results);
+
+});
+
+Route::get('/gameobject/spawn/id/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/gameobject/spawn/guid/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject WHERE guid = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+
 /* Loot templates */
 
 Route::get('/loot/creature/{id}', function($id) {
