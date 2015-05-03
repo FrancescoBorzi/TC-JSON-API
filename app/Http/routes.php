@@ -11,10 +11,16 @@ Route::get('/creature/template/{id}', function($id) {
 
 Route::get('/creature/template/{name}/{subname?}', function($name, $subname = null) {
 
+  $name = DB::connection()->getPdo()->quote("%" . $name . "%");
+
   if ($subname == null)
-    $query = sprintf("SELECT * FROM creature_template WHERE name LIKE '%%%s%%'", $name);
+    $query = sprintf("SELECT * FROM creature_template WHERE name LIKE %s", $name);
   else
-    $query = sprintf("SELECT * FROM creature_template WHERE name LIKE '%%%s%%' AND subname LIKE '%%%s%%'", $name, $subname);
+  {
+    $subname = DB::connection()->getPdo()->quote("%" . $subname . "%");
+
+    $query = sprintf("SELECT * FROM creature_template WHERE name LIKE %s AND subname LIKE %s", $name, $subname);
+  }
 
   $results = DB::select($query);
 
@@ -47,7 +53,9 @@ Route::get('/gameobject/template/{id}', function($id) {
 
 Route::get('/gameobject/template/{name}', function($name) {
 
-  $query = sprintf("SELECT * FROM gameobject_template WHERE name LIKE '%%%s%%'", $name);
+  $name = DB::connection()->getPdo()->quote("%" . $name . "%");
+
+  $query = sprintf("SELECT * FROM gameobject_template WHERE name LIKE %s", $name);
 
   $results = DB::select($query);
 
@@ -80,7 +88,9 @@ Route::get('/item/template/{id}', function($id) {
 
 Route::get('/item/template/{name}', function($name) {
 
-  $query = sprintf("SELECT * FROM item_template WHERE name LIKE '%%%s%%'", $name);
+  $name = DB::connection()->getPdo()->quote("%" . $name . "%");
+
+  $query = sprintf("SELECT * FROM item_template WHERE name LIKE %s", $name);
 
   $results = DB::select($query);
 
