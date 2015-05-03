@@ -11,7 +11,10 @@ Route::get('/creature/template/{id}', function($id) {
 
 Route::get('/creature/template/{name}/{subname?}', function($name, $subname = null) {
 
-  $query = sprintf("SELECT * FROM creature_template WHERE name LIKE '%%%s%%'", $name);
+  if ($subname == null)
+    $query = sprintf("SELECT * FROM creature_template WHERE name LIKE '%%%s%%'", $name);
+  else
+    $query = sprintf("SELECT * FROM creature_template WHERE name LIKE '%%%s%%' AND subname LIKE '%%%s%%'", $name, $subname);
 
   $results = DB::select($query);
 
