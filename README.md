@@ -10,7 +10,7 @@ Take a look at the [API documentation](https://github.com/ShinDarth/TC-JSON-API/
 
 ## Installation
 
-TODO
+Installation instructions are available [here](https://github.com/ShinDarth/TC-JSON-API/blob/master/INSTALL.md).
 
 ## Contributing
 
@@ -21,4 +21,4 @@ If you don't want to code, you can simply help us by telling us your suggestion 
 
 ### License
 
-The TrinityCore JSON API is open-sourced software licensed under the [GNU GPL license](https://github.com/ShinDarth/TC-JSON-API/blob/master/LICENSE)
+The TrinityCore JSON API is open-sourced software licensed under the [GNU GPL license](https://github.com/ShinDarth/TC-JSON-API/blob/master/LICENSE).
