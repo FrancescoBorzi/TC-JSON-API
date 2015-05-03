@@ -1,27 +1,24 @@
-## Laravel PHP Framework
+## TrinityCore JSON REST API
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+This software provides an easy to use RESTful API for [TrinityCore](http://www.trinitycore.org/) available via HTTP, which delivers the most important database contents in simple JSON format. It is written using [Laravel](http://laravel.com/) PHP framework.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+Our goal is to build a strong, reliable base on which you can build awesome web applications for TrinityCore (e.g. search engines, visual database editors, server administration tools, etc...).
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Documentation
 
-## Official Documentation
+Take a look at the [API documentation](https://github.com/ShinDarth/TC-JSON-API/wiki) to see all the API's potential and to know how to use it.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+## Installation
+
+TODO
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+We need your help to reach our goal in building a valid API for TrinityCore. If you don't know the [Laravel](http://laravel.com/) framework, this is a good chance to learn it.
 
-## Security Vulnerabilities
+If you don't want to code, you can simply help us by telling us your suggestion about this API or by reporting any bugs, in these cases please fill an issue [here](https://github.com/ShinDarth/TC-JSON-API/issues).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
 ### License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+The TrinityCore JSON API is open-sourced software licensed under the [GNU GPL license](https://github.com/ShinDarth/TC-JSON-API/blob/master/LICENSE)
