@@ -97,12 +97,12 @@ Route::get('/gameobject/spawn/id/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
-Route::get('/gameobject/spawn/guid/{id}', function($id) {
-  $results = DB::select("SELECT * FROM gameobject WHERE guid = ?", [$id]);
+Route::get('/gameobject/spawn/guid/{guid}', function($guid) {
+  $results = DB::select("SELECT * FROM gameobject WHERE guid = ?", [$guid]);
 
   return Response::json($results);
 })
-  ->where('id', '[0-9]+');
+  ->where('guid', '[0-9]+');
 
 
 /* Items */
