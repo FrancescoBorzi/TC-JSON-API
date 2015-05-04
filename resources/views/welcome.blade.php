@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Laravel</title>
+		<title>TC-JSON-API</title>
 
 		<link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 
@@ -12,7 +12,7 @@
 				height: 100%;
 				color: #B0BEC5;
 				display: table;
-				font-weight: 100;
+				font-weight: 300;
 				font-family: 'Lato';
 			}
 
@@ -32,16 +32,24 @@
 				margin-bottom: 40px;
 			}
 
-			.quote {
+			.version {
 				font-size: 24px;
+                font-weight: 400;
 			}
+
+            .credit {
+                position: absolute;
+                bottom: 30px;
+                left: 45%;
+            }
 		</style>
 	</head>
 	<body>
 		<div class="container">
-			<div class="content">
-				<div class="title">Laravel 5</div>
-				<div class="quote">{{ Inspiring::quote() }}</div>
+			<div class="content text-center">
+				<div class="title">TrinityCore-JSON-API</div>
+				<div class="version">Database version: <strong><?= $db_version ?></strong></div>
+				<div class="credit">Created by <strong>ShinDarth</strong></div>
 			</div>
 		</div>
 	</body>

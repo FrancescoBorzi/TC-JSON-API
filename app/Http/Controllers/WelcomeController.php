@@ -1,8 +1,9 @@
 <?php namespace App\Http\Controllers;
+use DB;
 
 class WelcomeController extends Controller {
 
-	/*
+    /*
 	|--------------------------------------------------------------------------
 	| Welcome Controller
 	|--------------------------------------------------------------------------
@@ -13,24 +14,28 @@ class WelcomeController extends Controller {
 	|
 	*/
 
-	/**
+    /**
 	 * Create a new controller instance.
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
-		$this->middleware('guest');
-	}
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
 
-	/**
+    /**
 	 * Show the application welcome screen to the user.
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
-		return view('welcome');
-	}
+    public function index()
+    {
+        $results = DB::select('SELECT * FROM version');
+
+        $version= json_decode(json_encode($results[0]), true);
+
+        return view('welcome', $version);
+    }
 
 }

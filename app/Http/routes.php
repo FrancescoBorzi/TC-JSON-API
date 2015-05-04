@@ -307,11 +307,12 @@ Route::get('/loot/spell/item/{id}', function($id) {
 
 /* Other */
 
+Route::get('/version', function() {
+  $results = DB::select('SELECT * FROM version');
+
+  return Response::json($results);
+});
+
+
 Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
-
-Route::controllers([
-  'auth' => 'Auth\AuthController',
-  'password' => 'Auth\PasswordController',
-]);
