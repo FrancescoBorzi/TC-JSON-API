@@ -147,6 +147,23 @@ Route::get('/quest/template/{name}', function($name) {
 });
 
 
+/* Vendors */
+
+Route::get('/vendor/creature/{id}', function($id) {
+  $results = DB::select("SELECT * FROM npc_vendor WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/vendor/item/{id}', function($id) {
+  $results = DB::select("SELECT * FROM npc_vendor WHERE item = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+
 /* Loot templates */
 
 Route::get('/loot/creature/{id}', function($id) {
