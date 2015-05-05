@@ -25,7 +25,8 @@ Route::get('/creature/template/{name}/{subname?}', function($name, $subname = nu
   $results = DB::select($query);
 
   return Response::json($results);
-});
+})
+  ->where('name', '[a-zA-Z]{3,}');
 
 Route::get('/creature/spawn/id/{id}', function($id) {
   $results = DB::select("SELECT * FROM creature WHERE id = ?", [$id]);
@@ -88,7 +89,8 @@ Route::get('/gameobject/template/{name}', function($name) {
   $results = DB::select($query);
 
   return Response::json($results);
-});
+})
+  ->where('name', '[a-zA-Z]{3,}');
 
 Route::get('/gameobject/spawn/id/{id}', function($id) {
   $results = DB::select("SELECT * FROM gameobject WHERE id = ?", [$id]);
@@ -151,7 +153,8 @@ Route::get('/item/template/{name}', function($name) {
   $results = DB::select($query);
 
   return Response::json($results);
-});
+})
+  ->where('name', '[a-zA-Z]{3,}');
 
 
 /* Quests */
@@ -172,7 +175,8 @@ Route::get('/quest/template/{name}', function($name) {
   $results = DB::select($query);
 
   return Response::json($results);
-});
+})
+  ->where('name', '[a-zA-Z]{3,}');
 
 
 /* Vendors */
