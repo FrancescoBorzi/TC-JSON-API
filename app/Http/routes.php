@@ -104,6 +104,34 @@ Route::get('/gameobject/spawn/guid/{guid}', function($guid) {
 })
   ->where('guid', '[0-9]+');
 
+Route::get('/gameobject/queststarter/id/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject_queststarter WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/gameobject/queststarter/quest/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject_queststarter WHERE quest = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/gameobject/questender/id/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject_questender WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/gameobject/questender/quest/{id}', function($id) {
+  $results = DB::select("SELECT * FROM gameobject_questender WHERE quest = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 
 /* Items */
 
