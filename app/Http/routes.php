@@ -216,14 +216,14 @@ Route::get('/quest/template/{name}', function($name) {
 /* Vendors */
 
 Route::get('/vendor/creature/{id}', function($id) {
-  $results = DB::select("SELECT * FROM npc_vendor WHERE entry = ?", [$id]);
+  $results = DB::select("SELECT t1.entry, t1.slot, t1.item, t2.name, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN item_template AS t2 ON t1.item =  t2.entry WHERE t1.entry = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/vendor/item/{id}', function($id) {
-  $results = DB::select("SELECT * FROM npc_vendor WHERE item = ?", [$id]);
+  $results = DB::select("SELECT t1.entry, t2.name, t1.slot, t1.item, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN creature_template AS t2 ON t1.entry =  t2.entry WHERE t1.item = ?", [$id]);
 
   return Response::json($results);
 })
