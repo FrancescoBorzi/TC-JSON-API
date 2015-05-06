@@ -4,7 +4,8 @@
 
 In order to install this API, your system must have:
 
-- **PHP >= 5.4**
+- **[TDB 335.58](https://github.com/TrinityCore/TrinityCore/releases/)** or newer
+- **PHP 5.4** or newer
 - **Mcrypt PHP Extension**
 - **[Composer](https://getcomposer.org/)**
 
