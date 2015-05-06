@@ -326,7 +326,8 @@ Route::get('/loot/reference/item/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 Route::get('/loot/gameobject/item/{id}', function($id) {
-  $results = DB::select('SELECT * FROM gameobject_loot_template WHERE item = ?', [$id]);
+  $results = DB::select('SELECT t1.Entry, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount  FROM gameobject_loot_template AS t1 LEFT JOIN gameobject_template as t2 ON t1.Entry = t2.entry WHERE item = ?
+', [$id]);
 
   return Response::json($results);
 })
