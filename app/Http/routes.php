@@ -9,6 +9,13 @@ Route::get('/creature/template/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/creature/template/name/{id}', function($id) {
+  $results = DB::select("SELECT entry, name FROM creature_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/creature/template/{name}/{subname?}', function($name, $subname = null) {
   if (strlen($name) < 4) return json_encode(array("error" => "min search length 4 characters"));
 
@@ -82,6 +89,13 @@ Route::get('/gameobject/template/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/gameobject/template/name/{id}', function($id) {
+  $results = DB::select("SELECT entry, name FROM gameobject_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/gameobject/template/{name}', function($name) {
 
   if (strlen($name) < 4) return json_encode(array("error" => "min search length 4 characters"));
@@ -147,6 +161,13 @@ Route::get('/item/template/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/item/template/name/{id}', function($id) {
+  $results = DB::select("SELECT entry, name FROM item_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/item/template/{name}', function($name) {
 
   if (strlen($name) < 4) return json_encode(array("error" => "min search length 4 characters"));
@@ -166,6 +187,13 @@ Route::get('/item/template/{name}', function($name) {
 
 Route::get('/quest/template/{id}', function($id) {
   $results = DB::select("SELECT * FROM quest_template WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/template/name/{id}', function($id) {
+  $results = DB::select("SELECT Id, Title FROM quest_template WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
