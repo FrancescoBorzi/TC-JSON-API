@@ -192,7 +192,7 @@ Route::get('/quest/template/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
-Route::get('/quest/template/name/{id}', function($id) {
+Route::get('/quest/template/title/{id}', function($id) {
   $results = DB::select("SELECT Id, Title FROM quest_template WHERE id = ?", [$id]);
 
   return Response::json($results);
