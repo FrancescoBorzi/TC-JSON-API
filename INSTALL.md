@@ -27,6 +27,7 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 - Move inside the TC-JSON-API and run composer install:
 
 `cd TC-JSON-API`
+
 `composer install`
 
 - Copy the file **.env.example** to **.env**
