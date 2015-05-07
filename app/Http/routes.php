@@ -52,28 +52,28 @@ Route::get('/creature/spawn/guid/{guid}', function($guid) {
   ->where('guid', '[0-9]+');
 
 Route::get('/creature/queststarter/id/{id}', function($id) {
-  $results = DB::select("SELECT * FROM creature_queststarter WHERE id = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t1.quest, t2.Title FROM creature_queststarter AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/creature/queststarter/quest/{id}', function($id) {
-  $results = DB::select("SELECT * FROM creature_queststarter WHERE quest = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t2.name, t1.quest FROM creature_queststarter AS t1 LEFT JOIN creature_template AS t2 ON t1.id = t2.entry WHERE t1.quest = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/creature/questender/id/{id}', function($id) {
-  $results = DB::select("SELECT * FROM creature_questender WHERE id = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t1.quest, t2.Title FROM creature_questender AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/creature/questender/quest/{id}', function($id) {
-  $results = DB::select("SELECT * FROM creature_questender WHERE quest = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t2.name, t1.quest FROM creature_questender AS t1 LEFT JOIN creature_template AS t2 ON t1.id = t2.entry WHERE t1.quest = ?", [$id]);
 
   return Response::json($results);
 })
