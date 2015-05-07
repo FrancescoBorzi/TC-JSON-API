@@ -124,28 +124,28 @@ Route::get('/gameobject/spawn/guid/{guid}', function($guid) {
   ->where('guid', '[0-9]+');
 
 Route::get('/gameobject/queststarter/id/{id}', function($id) {
-  $results = DB::select("SELECT * FROM gameobject_queststarter WHERE id = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t1.quest, t2.Title FROM gameobject_queststarter AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/gameobject/queststarter/quest/{id}', function($id) {
-  $results = DB::select("SELECT * FROM gameobject_queststarter WHERE quest = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t2.name, t1.quest FROM gameobject_queststarter AS t1 LEFT JOIN gameobject_template AS t2 ON t1.id = t2.entry WHERE t1.quest = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/gameobject/questender/id/{id}', function($id) {
-  $results = DB::select("SELECT * FROM gameobject_questender WHERE id = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t1.quest, t2.Title FROM gameobject_questender AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/gameobject/questender/quest/{id}', function($id) {
-  $results = DB::select("SELECT * FROM gameobject_questender WHERE quest = ?", [$id]);
+  $results = DB::select("SELECT t1.id, t2.name, t1.quest FROM gameobject_questender AS t1 LEFT JOIN gameobject_template AS t2 ON t1.id = t2.entry WHERE t1.quest = ?", [$id]);
 
   return Response::json($results);
 })
