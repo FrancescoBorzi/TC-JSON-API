@@ -332,7 +332,7 @@ Route::get('/loot/gameobject/item/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 Route::get('/loot/item/item/{id}', function($id) {
-  $results = DB::select('SELECT * FROM item_loot_template WHERE item = ?', [$id]);
+  $results = DB::select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
 
   return Response::json($results);
 })
@@ -346,7 +346,7 @@ Route::get('/loot/fishing/item/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 Route::get('/loot/disenchant/item/{id}', function($id) {
-  $results = DB::select('SELECT * FROM disenchant_loot_template WHERE item = ?', [$id]);
+  $results = DB::select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
 
   return Response::json($results);
 })
