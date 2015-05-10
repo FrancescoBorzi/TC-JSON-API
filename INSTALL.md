@@ -36,11 +36,17 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 
 DB_HOST=localhost
 
-DB_DATABASE=world
+DB_WORLD=world
+
+DB_CHARACTERS=characters
+
+DB_AUTH=auth
 
 DB_USERNAME=root
 
 DB_PASSWORD=password
+
+Note: you **do not need** to set all databases, just set the database that you need.
 
 - Ensure that the entire folder TC-JSON-API (including all its files and subfolders) have the proper file permissions.
 
