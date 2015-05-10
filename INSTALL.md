@@ -34,17 +34,17 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 
 - Open **.env** with a text editor and set properly DB_* parameters, example:
 
-DB_HOST=localhost
+`DB_HOST=localhost`
 
-DB_WORLD=world
+`DB_WORLD=world`
 
-DB_CHARACTERS=characters
+`DB_CHARACTERS=characters`
 
-DB_AUTH=auth
+`DB_AUTH=auth`
 
-DB_USERNAME=root
+`DB_USERNAME=root`
 
-DB_PASSWORD=password
+`DB_PASSWORD=yourpassword`
 
 Note: you **do not need** to set all databases, just set the database that you need.
 
