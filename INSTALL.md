@@ -8,6 +8,7 @@ In order to install this API, your system must have:
 - **PHP 5.4** or newer
 - **Mcrypt PHP Extension**
 - **[Composer](https://getcomposer.org/)**
+- **[Laravel](http://laravel.com)**
 
 You may also need:
 
@@ -17,6 +18,10 @@ You may also need:
 
 
 ## Installation
+
+- Install all the required software. If you don't have Laravel yet, after you have installed composer, just run:
+
+`composer global require "laravel/installer=~1.1"`
 
 - Clone the TC-JSON-API inside your server web directory:
 
