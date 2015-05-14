@@ -49,7 +49,7 @@
         <div class="container">
             <div class="content text-center">
                 <div class="title">TrinityCore-JSON-API</div>
-                <div class="item">API version: <strong>0.2</strong></div>
+                <div class="item">API version: <strong>0.3</strong></div>
                 <div class="item">API branch: <strong>3.3.5</strong></div>
                 <div class="item">Database version: <strong><?= $db_version ?></strong></div>
                 <div class="credit">Created by <strong>ShinDarth</strong></div>
