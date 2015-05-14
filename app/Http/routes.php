@@ -5,9 +5,9 @@
 Route::get('/search/creature', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) && !isset($_GET['subname']) )
-    return;
+    return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::table('creature_template');
+  $query = DB::connection('world')->table('creature_template')->select('entry', 'name', 'subname');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
@@ -19,6 +19,81 @@ Route::get('/search/creature', function() {
     $query->where('subname', 'LIKE', "%". $_GET['subname'] ."%");
 
   $results = $query->orderBy('entry')->get();
+
+  return Response::json($results);
+});
+
+Route::get('/search/quest', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('world')->table('quest_template')->select('Id', 'Title', 'Details');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('Id', 'LIKE', "%". $_GET['id'] ."%");
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('Title', 'LIKE', "%". $_GET['name'] ."%");
+
+  $results = $query->orderBy('Id')->get();
+
+  return Response::json($results);
+});
+
+Route::get('/search/item', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('world')->table('item_template')->select('entry', 'name');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+
+  $results = $query->orderBy('entry')->get();
+
+  return Response::json($results);
+});
+
+Route::get('/search/gameobject', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('world')->table('gameobject_template')->select('entry', 'name');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+
+  $results = $query->orderBy('entry')->get();
+
+  return Response::json($results);
+});
+
+Route::get('/search/character', function() {
+
+  if ( !isset($_GET['guid']) && !isset($_GET['account']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('characters')->table('characters')->select('guid', 'account', 'name');
+
+  if (isset($_GET['guid']) && $_GET['guid'] != "")
+    $query->where('guid', 'LIKE', "%". $_GET['guid'] ."%");
+
+  if (isset($_GET['account']) && $_GET['account'] != "")
+    $query->where('account', 'LIKE', "%". $_GET['account'] ."%");
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+
+  $results = $query->orderBy('guid')->get();
 
   return Response::json($results);
 });
