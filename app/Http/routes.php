@@ -1,5 +1,29 @@
 <?php
 
+/* Search with multiple optional parameters */
+
+Route::get('/search/creature', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) && !isset($_GET['subname']) )
+    return;
+
+  $query = DB::table('creature_template');
+
+  if (isset($_GET['id']))
+    $query->where('entry', '=', $_GET['id']);
+
+  if (isset($_GET['name']))
+    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+
+  if (isset($_GET['subname']))
+    $query->where('subname', 'LIKE', "%". $_GET['subname'] ."%");
+
+  $results = $query->orderBy('entry')->get();
+
+  return Response::json($results);
+});
+
+
 /* Creatures */
 
 Route::get('/creature/template/{id}', function($id) {
