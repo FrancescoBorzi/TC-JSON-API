@@ -523,6 +523,10 @@ Route::get('/version', function() {
   return Response::json($results);
 });
 
+Route::get('/api', function() {
+  return Response::json(array("api_version" => "0.2", "api_branch" => "3.3.5"));
+});
+
 
 Route::get('/', 'WelcomeController@index');
 
