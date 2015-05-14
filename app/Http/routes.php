@@ -9,13 +9,13 @@ Route::get('/search/creature', function() {
 
   $query = DB::table('creature_template');
 
-  if (isset($_GET['id']))
-    $query->where('entry', '=', $_GET['id']);
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
 
-  if (isset($_GET['name']))
+  if (isset($_GET['name']) && $_GET['name'] != "")
     $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
 
-  if (isset($_GET['subname']))
+  if (isset($_GET['subname']) && $_GET['subname'] != "")
     $query->where('subname', 'LIKE', "%". $_GET['subname'] ."%");
 
   $results = $query->orderBy('entry')->get();
