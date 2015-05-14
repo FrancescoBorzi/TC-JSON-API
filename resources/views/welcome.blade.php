@@ -32,9 +32,10 @@
                 margin-bottom: 40px;
             }
 
-            .version {
+            .item {
                 font-size: 24px;
                 font-weight: 400;
+                margin: 10px;
             }
 
             .credit {
@@ -48,7 +49,9 @@
         <div class="container">
             <div class="content text-center">
                 <div class="title">TrinityCore-JSON-API</div>
-                <div class="version">Database version: <strong><?= $db_version ?></strong></div>
+                <div class="item">API version: <strong>0.2</strong></div>
+                <div class="item">API branch: <strong>3.3.5</strong></div>
+                <div class="item">Database version: <strong><?= $db_version ?></strong></div>
                 <div class="credit">Created by <strong>ShinDarth</strong></div>
             </div>
         </div>

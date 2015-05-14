@@ -31,9 +31,9 @@ class WelcomeController extends Controller {
 	 */
     public function index()
     {
-        $results = DB::select('SELECT * FROM version');
+        $world = DB::connection("world")->select('SELECT * FROM version');
 
-        $version= json_decode(json_encode($results[0]), true);
+        $version = json_decode(json_encode($world[0]), true);
 
         return view('welcome', $version);
     }
