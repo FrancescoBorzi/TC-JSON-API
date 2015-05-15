@@ -59,14 +59,18 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 
 `DB_PASSWORD=yourpassword`
 
-Note: you **do not need** to set all databases, just set the database that you need.
-
-- If for some reasons the API is not able to read from .env file, you have to configure database manually in **config/database.php** file.
-
-- Ensure that the entire folder TC-JSON-API (including all its files and subfolders) have the proper file permissions.
+Note: **setting all databases is not mandatory**, just set the databases that you need.
 
 If everything is ok you should be able to correctly open [http://localhost/TC-JSON-API/public/index.php](http://localhost/TC-JSON-API/public/index.php).
 
-From now on you can perform HTTP requests to the API at **http://localhost/TC-JSON-API/public/**.
+From now on you can perform HTTP requests to the API at **http://localhost/TC-JSON-API/public/index.php/**.
 
 Check [our documentation](https://github.com/ShinDarth/TC-JSON-API/wiki) to see all possible requests.
+
+## Troubleshooting
+
+- Ensure that the entire folder TC-JSON-API (including all its files and subfolders) have the proper file permissions.
+
+- If you get white page or any error, check **storage/logs** to understand what happens.
+
+- If for some reasons the API is not able to read from .env file, you have to configure database manually in **config/database.php** file.
