@@ -136,6 +136,20 @@ Route::get('/creature/template/{name}/{subname?}', function($name, $subname = nu
   return Response::json($results);
 });
 
+Route::get('/creature/equip_template/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM creature_equip_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/creature/template/name/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT entry, name FROM creature_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/creature/spawn/id/{id}', function($id) {
   $results = DB::connection('world')->select("SELECT * FROM creature WHERE id = ?", [$id]);
 
