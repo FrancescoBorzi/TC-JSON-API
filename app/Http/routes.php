@@ -150,6 +150,13 @@ Route::get('/creature/template/name/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/creature/template_addon/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM creature_template_addon WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/creature/spawn/id/{id}', function($id) {
   $results = DB::connection('world')->select("SELECT * FROM creature WHERE id = ?", [$id]);
 
@@ -159,6 +166,13 @@ Route::get('/creature/spawn/id/{id}', function($id) {
 
 Route::get('/creature/spawn/guid/{guid}', function($guid) {
   $results = DB::connection('world')->select("SELECT * FROM creature WHERE guid = ?", [$guid]);
+
+  return Response::json($results);
+})
+  ->where('guid', '[0-9]+');
+
+Route::get('/creature/spawn/addon/{guid}', function($guid) {
+  $results = DB::connection('world')->select("SELECT * FROM creature_addon WHERE guid = ?", [$guid]);
 
   return Response::json($results);
 })
