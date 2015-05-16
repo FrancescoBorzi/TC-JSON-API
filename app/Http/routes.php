@@ -157,6 +157,13 @@ Route::get('/creature/template_addon/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/creature/onkill_reputation/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM creature_onkill_reputation WHERE creature_id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/creature/spawn/id/{id}', function($id) {
   $results = DB::connection('world')->select("SELECT * FROM creature WHERE id = ?", [$id]);
 
