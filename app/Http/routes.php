@@ -522,6 +522,86 @@ Route::get('/loot/spell/item/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 
+/* All *_loot_template with no extra fields */
+
+Route::get('/loot/template/creature/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM creature_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/reference/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM reference_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/gameobject/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM gameobject_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/item/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM item_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/fishing/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM fishing_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/disenchant/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM disenchant_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/prospecting/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM prospecting_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/milling/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM milling_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/pickpocketing/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM pickpocketing_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/skinning/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM skinning_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/loot/template/spell/{id}', function($id) {
+  $results = DB::connection('world')->select('SELECT * FROM spell_loot_template WHERE Entry = ?', [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+
 /* Characters */
 
 Route::get('/characters/{guid}', function($guid) {
