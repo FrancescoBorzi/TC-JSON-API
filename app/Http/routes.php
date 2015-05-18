@@ -370,6 +370,36 @@ Route::get('/vendor/item/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/npc_vendor/creature/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM npc_vendor WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/npc_vendor/item/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM npc_vendor WHERE item = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+
+/* Trainer */
+
+Route::get('/npc_trainer/creature/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM npc_trainer WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/npc_trainer/spell/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM npc_trainer WHERE spell = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9\-]+');
 
 /* Loot templates */
 
