@@ -178,7 +178,14 @@ Route::get('/creature/spawn/guid/{guid}', function($guid) {
 })
   ->where('guid', '[0-9]+');
 
-Route::get('/creature/spawn/addon/{guid}', function($guid) {
+Route::get('/creature/spawn/addon/id/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT t2.guid, t2.path_id, t2.mount, t2.bytes1, t2.bytes2, t2.emote, t2.auras FROM creature AS t1 RIGHT JOIN creature_addon AS t2 ON t1.guid = t2.guid WHERE t1.id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/creature/spawn/addon/guid/{guid}', function($guid) {
   $results = DB::connection('world')->select("SELECT * FROM creature_addon WHERE guid = ?", [$guid]);
 
   return Response::json($results);
