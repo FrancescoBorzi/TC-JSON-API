@@ -4,6 +4,10 @@ This software provides an easy to use **RESTful API** for [TrinityCore](http://w
 
 Our goal is to build a strong, reliable base on which you can build awesome web applications for TrinityCore (e.g. search engines, visual database editors, server administration tools, etc...).
 
+![TrinityCore JSON API](http://shinworld.altervista.org/images/tc-json-api.png "TrinityCore JSON API")
+
+The JSON API makes it easier to build your web applications, because you do not have to worry about accessing directly the database, and the datas are provided into a very friendly format for front-end web programming languages.
+
 ## Documentation
 
 Take a look at the [API documentation](https://github.com/ShinDarth/TC-JSON-API/wiki) to see all the API features and to know how to use them.
