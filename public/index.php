@@ -52,6 +52,9 @@ $response = $kernel->handle(
 	$request = Illuminate\Http\Request::capture()
 );
 
+// CORS fix
+header('Access-Control-Allow-Origin: *');
+
 $response->send();
 
 $kernel->terminate($request, $response);
