@@ -355,6 +355,13 @@ Route::get('/item/template/{name}', function($name) {
 
 });
 
+Route::get('/item/enchantment/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM item_enchantment_template WHERE entry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 
 /* Quests */
 
