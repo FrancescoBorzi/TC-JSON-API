@@ -98,6 +98,35 @@ Route::get('/search/character', function() {
   return Response::json($results);
 });
 
+Route::get('/search/smart_scripts', function() {
+
+  if (
+    !isset($_GET['entryorguid']) &&
+    !isset($_GET['source_type']) &&
+    !isset($_GET['id']) &&
+    !isset($_GET['link'])
+    ) {
+    return Response::json(array("error" => "please insert at least one parameter"));
+  }
+
+  $query = DB::connection('world')->table('smart_scripts')->select('*');
+
+  if (isset($_GET['entryorguid']) && $_GET['entryorguid'] != "")
+    $query->where('entryorguid', '=', $_GET['entryorguid']);
+
+  if (isset($_GET['source_type']) && $_GET['source_type'] != "")
+    $query->where('source_type', '=', $_GET['source_type']);
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('id', '=', $_GET['id']);
+
+  if (isset($_GET['link']) && $_GET['link'] != "")
+    $query->where('link', '=', $_GET['link']);
+
+  $results = $query->orderBy('entryorguid')->get();
+
+  return Response::json($results);
+});
 
 /* Creatures */
 
