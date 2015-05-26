@@ -10,13 +10,13 @@ Route::get('/search/creature', function() {
   $query = DB::connection('world')->table('creature_template')->select('entry', 'name', 'subname');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
+    $query->where('entry', 'LIKE', '%'. $_GET['id'] .'%');
 
   if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
 
   if (isset($_GET['subname']) && $_GET['subname'] != "")
-    $query->where('subname', 'LIKE', "%". $_GET['subname'] ."%");
+    $query->where('subname', 'LIKE', '%'. $_GET['subname'] .'%');
 
   $results = $query->orderBy('entry')->get();
 
@@ -31,10 +31,10 @@ Route::get('/search/quest', function() {
   $query = DB::connection('world')->table('quest_template')->select('Id', 'Title', 'Details');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('Id', 'LIKE', "%". $_GET['id'] ."%");
+    $query->where('Id', 'LIKE', '%'. $_GET['id'] .'%');
 
   if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('Title', 'LIKE', "%". $_GET['name'] ."%");
+    $query->where('Title', 'LIKE', '%'. $_GET['name'] .'%');
 
   $results = $query->orderBy('Id')->get();
 
@@ -49,10 +49,10 @@ Route::get('/search/item', function() {
   $query = DB::connection('world')->table('item_template')->select('entry', 'name');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
+    $query->where('entry', 'LIKE', '%'. $_GET['id'] .'%');
 
   if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
 
   $results = $query->orderBy('entry')->get();
 
@@ -67,10 +67,10 @@ Route::get('/search/gameobject', function() {
   $query = DB::connection('world')->table('gameobject_template')->select('entry', 'name');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('entry', 'LIKE', "%". $_GET['id'] ."%");
+    $query->where('entry', 'LIKE', '%'. $_GET['id'] .'%');
 
   if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
 
   $results = $query->orderBy('entry')->get();
 
@@ -85,13 +85,13 @@ Route::get('/search/character', function() {
   $query = DB::connection('characters')->table('characters')->select('guid', 'account', 'name');
 
   if (isset($_GET['guid']) && $_GET['guid'] != "")
-    $query->where('guid', 'LIKE', "%". $_GET['guid'] ."%");
+    $query->where('guid', 'LIKE', '%'. $_GET['guid'] .'%');
 
   if (isset($_GET['account']) && $_GET['account'] != "")
-    $query->where('account', 'LIKE', "%". $_GET['account'] ."%");
+    $query->where('account', 'LIKE', '%'. $_GET['account'] .'%');
 
   if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', "%". $_GET['name'] ."%");
+    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
 
   $results = $query->orderBy('guid')->get();
 
@@ -112,21 +112,32 @@ Route::get('/search/smart_scripts', function() {
   $query = DB::connection('world')->table('smart_scripts')->select('*');
 
   if (isset($_GET['entryorguid']) && $_GET['entryorguid'] != "")
-    $query->where('entryorguid', '=', $_GET['entryorguid']);
+    $query->where('entryorguid', 'LIKE', '%'. $_GET['entryorguid'] .'%');
 
   if (isset($_GET['source_type']) && $_GET['source_type'] != "")
-    $query->where('source_type', '=', $_GET['source_type']);
+    $query->where('source_type', 'LIKE', '%'. $_GET['source_type'] .'%');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', '=', $_GET['id']);
+    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
 
   if (isset($_GET['link']) && $_GET['link'] != "")
-    $query->where('link', '=', $_GET['link']);
+    $query->where('link', 'LIKE', '%'. $_GET['link'] .'%');
 
   $results = $query->orderBy('entryorguid')->get();
 
   return Response::json($results);
 });
+
+
+/* Smart AI */
+
+Route::get('/smart_scripts/{source_type}/{entryorguid}', function($source_type, $entryorguid) {
+  $results = DB::connection('world')->select("SELECT * FROM smart_scripts WHERE source_type = ? AND entryorguid = ?", [$source_type, $entryorguid]);
+
+  return Response::json($results);
+})
+  ->where('source_type', '[0-9]+')->where('entryorguid', '[0-9]+');
+
 
 /* Creatures */
 
