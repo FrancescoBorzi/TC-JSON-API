@@ -102,9 +102,7 @@ Route::get('/search/smart_scripts', function() {
 
   if (
     !isset($_GET['entryorguid']) &&
-    !isset($_GET['source_type']) &&
-    !isset($_GET['id']) &&
-    !isset($_GET['link'])
+    !isset($_GET['source_type'])
     ) {
     return Response::json(array("error" => "please insert at least one parameter"));
   }
@@ -116,12 +114,6 @@ Route::get('/search/smart_scripts', function() {
 
   if (isset($_GET['source_type']) && $_GET['source_type'] != "")
     $query->where('source_type', 'LIKE', '%'. $_GET['source_type'] .'%');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['link']) && $_GET['link'] != "")
-    $query->where('link', 'LIKE', '%'. $_GET['link'] .'%');
 
   $results = $query->orderBy('entryorguid')->groupBy('entryorguid', 'source_type')->get();
 
