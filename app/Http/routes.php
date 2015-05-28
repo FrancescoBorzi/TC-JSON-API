@@ -109,7 +109,7 @@ Route::get('/search/smart_scripts', function() {
     return Response::json(array("error" => "please insert at least one parameter"));
   }
 
-  $query = DB::connection('world')->table('smart_scripts')->select('*');
+  $query = DB::connection('world')->table('smart_scripts')->select('entryorguid', 'source_type');
 
   if (isset($_GET['entryorguid']) && $_GET['entryorguid'] != "")
     $query->where('entryorguid', 'LIKE', '%'. $_GET['entryorguid'] .'%');
@@ -123,7 +123,7 @@ Route::get('/search/smart_scripts', function() {
   if (isset($_GET['link']) && $_GET['link'] != "")
     $query->where('link', 'LIKE', '%'. $_GET['link'] .'%');
 
-  $results = $query->orderBy('entryorguid')->get();
+  $results = $query->orderBy('entryorguid')->groupBy('entryorguid', 'source_type')->get();
 
   return Response::json($results);
 });
