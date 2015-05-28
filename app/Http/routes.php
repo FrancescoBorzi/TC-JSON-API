@@ -128,7 +128,7 @@ Route::get('/smart_scripts/{source_type}/{entryorguid}', function($source_type, 
 
   return Response::json($results);
 })
-  ->where('source_type', '[0-9]+')->where('entryorguid', '[0-9]+');
+  ->where('source_type', '[0-9]+')->where('entryorguid', '[\-]{0,1}[0-9]+');
 
 
 /* Creatures */
