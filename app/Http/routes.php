@@ -1,5 +1,15 @@
 <?php
 
+/* DBC */
+
+Route::get('/dbc/spells_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM spells_wotlk WHERE ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+
 /* Search with multiple optional parameters */
 
 Route::get('/search/creature', function() {
