@@ -125,6 +125,9 @@ Route::get('/search/smart_scripts', function() {
   if (isset($_GET['source_type']) && $_GET['source_type'] != "")
     $query->where('source_type', 'LIKE', '%'. $_GET['source_type'] .'%');
 
+  if (isset($_GET['comment']) && $_GET['comment'] != "")
+    $query->where('comment', 'LIKE', '%'. $_GET['comment'] .'%');
+
   $results = $query->orderBy('entryorguid')->groupBy('entryorguid', 'source_type')->get();
 
   return Response::json($results);
