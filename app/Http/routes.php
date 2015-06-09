@@ -153,6 +153,43 @@ Route::get('/search/dbc/maps_wotlk', function() {
 });
 
 
+Route::get('/search/dbc/skills_wotlk', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('sqlite')->table('skills_wotlk')->select('id', 'name');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
+
+  $results = $query->orderBy('id')->get();
+
+  return Response::json($results);
+});
+
+Route::get('/search/dbc/spells_wotlk', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('sqlite')->table('spells_wotlk')->select('ID', 'spellName');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('ID', 'LIKE', '%'. $_GET['id'] .'%');
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('spellName', 'LIKE', '%'. $_GET['name'] .'%');
+
+  $results = $query->orderBy('ID')->get();
+
+  return Response::json($results);
+});
+
+
 /* Smart AI */
 
 Route::get('/smart_scripts/{source_type}/{entryorguid}', function($source_type, $entryorguid) {
