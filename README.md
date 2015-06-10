@@ -6,7 +6,7 @@ Our goal is to build a strong, reliable base on which you can build awesome web 
 
 ![TrinityCore JSON API](http://shinworld.altervista.org/images/tc-json-api.png "TrinityCore JSON API")
 
-The JSON API makes it easier to build your web applications, because **you do not have to worry about accessing directly the database**, and the datas are provided into a very friendly format for front-end web programming languages.
+The JSON API makes it easier to build your web applications, because **you do not have to worry about accessing directly the database**, and the data are provided into a very friendly format for front-end web programming languages.
 
 Also, a **single instance** of the TrinityCore JSON API can be a data provider for **multiple web applications**, even **among separated machines**.
 
