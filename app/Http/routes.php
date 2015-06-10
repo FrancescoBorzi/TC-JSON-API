@@ -861,7 +861,7 @@ Route::get('/version', function() {
 });
 
 Route::get('/api', function() {
-  return Response::json(array("api_version" => "0.4", "api_branch" => "3.3.5"));
+  return Response::json(array("api_version" => "0.5", "api_branch" => "3.3.5"));
 });
 
 
