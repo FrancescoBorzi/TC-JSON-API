@@ -189,6 +189,24 @@ Route::get('/search/dbc/spells_wotlk', function() {
   return Response::json($results);
 });
 
+Route::get('/search/dbc/areas_and_zones_wotlk', function() {
+
+  if ( !isset($_GET['id']) && !isset($_GET['name']) )
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  $query = DB::connection('sqlite')->table('areas_and_zones_wotlk')->select('m_ID', 'm_AreaName_lang');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('m_ID', 'LIKE', '%'. $_GET['id'] .'%');
+
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $query->where('m_AreaName_lang', 'LIKE', '%'. $_GET['name'] .'%');
+
+  $results = $query->orderBy('m_ID')->get();
+
+  return Response::json($results);
+});
+
 
 /* Smart AI */
 
