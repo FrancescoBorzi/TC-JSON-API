@@ -38,15 +38,15 @@ Route::get('/search/quest', function() {
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('world')->table('quest_template')->select('Id', 'Title', 'Details');
+  $query = DB::connection('world')->table('quest_template')->select('ID', 'LogTitle', 'QuestDescription');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('Id', 'LIKE', '%'. $_GET['id'] .'%');
+    $query->where('ID', 'LIKE', '%'. $_GET['id'] .'%');
 
   if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('Title', 'LIKE', '%'. $_GET['name'] .'%');
+    $query->where('LogTitle', 'LIKE', '%'. $_GET['name'] .'%');
 
-  $results = $query->orderBy('Id')->get();
+  $results = $query->orderBy('ID')->get();
 
   return Response::json($results);
 });
@@ -256,7 +256,7 @@ Route::get('/creature/template/{name}/{subname?}', function($name, $subname = nu
 });
 
 Route::get('/creature/equip_template/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT * FROM creature_equip_template WHERE entry = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT * FROM creature_equip_template WHERE CreatureID = ?", [$id]);
 
   return Response::json($results);
 })
@@ -316,7 +316,7 @@ Route::get('/creature/queststarter/id/{id}', function($id) {
   if  (isset($_GET['names']) && $_GET['names'] == 0)
     $results = DB::connection('world')->select("SELECT * FROM creature_queststarter WHERE id = ?", [$id]);
   else
-    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.Title FROM creature_queststarter AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
+    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.LogTitle FROM creature_queststarter AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.ID WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
@@ -338,7 +338,7 @@ Route::get('/creature/questender/id/{id}', function($id) {
   if  (isset($_GET['names']) && $_GET['names'] == 0)
     $results = DB::connection('world')->select("SELECT * FROM creature_questender WHERE id = ?", [$id]);
   else
-    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.Title FROM creature_questender AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
+    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.LogTitle FROM creature_questender AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.ID WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
@@ -404,7 +404,7 @@ Route::get('/gameobject/queststarter/id/{id}', function($id) {
   if  (isset($_GET['names']) && $_GET['names'] == 0)
     $results = DB::connection('world')->select("SELECT * FROM gameobject_queststarter WHERE id = ?", [$id]);
   else
-    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.Title FROM gameobject_queststarter AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
+    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.LogTitle FROM gameobject_queststarter AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.ID WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
@@ -426,7 +426,7 @@ Route::get('/gameobject/questender/id/{id}', function($id) {
   if  (isset($_GET['names']) && $_GET['names'] == 0)
     $results = DB::connection('world')->select("SELECT * FROM gameobject_questender WHERE id = ?", [$id]);
   else
-    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.Title FROM gameobject_questender AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.id WHERE t1.id = ?", [$id]);
+    $results = DB::connection('world')->select("SELECT t1.id, t1.quest, t2.LogTitle FROM gameobject_questender AS t1 LEFT JOIN quest_template AS t2 ON t1.quest = t2.ID WHERE t1.id = ?", [$id]);
 
   return Response::json($results);
 })
@@ -485,14 +485,14 @@ Route::get('/item/enchantment/{id}', function($id) {
 /* Quests */
 
 Route::get('/quest/template/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT * FROM quest_template WHERE id = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT * FROM quest_template WHERE ID = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/quest/template/title/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT Id, Title FROM quest_template WHERE id = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT ID, LogTitle FROM quest_template WHERE ID = ?", [$id]);
 
   return Response::json($results);
 })
@@ -504,7 +504,7 @@ Route::get('/quest/template/{name}', function($name) {
 
   $name = DB::connection()->getPdo()->quote("%" . $name . "%");
 
-  $query = sprintf("SELECT * FROM quest_template WHERE title LIKE %s", $name);
+  $query = sprintf("SELECT * FROM quest_template WHERE LogTitle LIKE %s", $name);
 
   $results = DB::connection('world')->select($query);
 
@@ -546,14 +546,14 @@ Route::get('/npc_vendor/item/{id}', function($id) {
 /* Trainer */
 
 Route::get('/npc_trainer/creature/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT * FROM npc_trainer WHERE entry = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT * FROM npc_trainer WHERE ID = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/npc_trainer/spell/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT * FROM npc_trainer WHERE spell = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT * FROM npc_trainer WHERE SpellID = ?", [$id]);
 
   return Response::json($results);
 })
@@ -845,7 +845,7 @@ Route::get('/custom/GetQuestTitleByCriteria/', function() {
     return Response::json(array("error" => "please insert at least one parameter"));
   }
 
-  $query = DB::connection('world')->table('quest_template')->select('title');
+  $query = DB::connection('world')->table('quest_template')->select('LogTitle');
 
   if (isset($_GET['RequiredNpcOrGo1']) && $_GET['RequiredNpcOrGo1'] != "") {
     $query->orWhere('RequiredNpcOrGo1', 'LIKE', '%'. $_GET['RequiredNpcOrGo1'] .'%');
