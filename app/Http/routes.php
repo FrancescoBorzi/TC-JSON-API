@@ -2,8 +2,175 @@
 
 /* DBC */
 
+Route::get('/dbc/achievements_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/achievements_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wotlk WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/areas_and_zones_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wod WHERE m_ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/areas_and_zones_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wotlk WHERE m_ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/areatriggers_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wod WHERE m_id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/areatriggers_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wotlk WHERE m_id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/emotes_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/emotes_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wotlk WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/factions_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM factions_wod WHERE m_ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/factions_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM factions_wotlk WHERE m_ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/languages_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM languages_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/languages_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM languages_wotlk WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+/* missing `maps_wod` table in sqlite db
+Route::get('/dbc/maps_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM maps_wod WHERE m_ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+*/
+
+Route::get('/dbc/maps_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM maps_wotlk WHERE m_ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/player_titles_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/player_titles_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wotlk WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/skills_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM skills_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/skills_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM skills_wotlk WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+/* missing `sound_entries_wod` table in sqlite db
+Route::get('/dbc/sound_entries_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+*/
+
+Route::get('/dbc/sound_entries_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wotlk WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+/* missing `spells_wod` table in sqlite db
+Route::get('/dbc/spells_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM spells_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+  */
+
 Route::get('/dbc/spells_wotlk/{id}', function($id) {
   $results = DB::connection('sqlite')->select("SELECT * FROM spells_wotlk WHERE ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/taxi_nodes_wod/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wod WHERE id = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/dbc/taxi_nodes_wotlk/{id}', function($id) {
+  $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
