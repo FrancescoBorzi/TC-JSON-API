@@ -791,6 +791,14 @@ Route::get('/creature/questender/quest/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/creature/questitem/{id}', function($id) {
+
+    $results = DB::connection('world')->select("SELECT * FROM creature_questitem WHERE CreatureEntry = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 
 /* Gameobjects */
 
@@ -874,6 +882,14 @@ Route::get('/gameobject/questender/quest/{id}', function($id) {
     $results = DB::connection('world')->select("SELECT * FROM gameobject_questender WHERE quest = ?", [$id]);
   else
     $results = DB::connection('world')->select("SELECT t1.id, t2.name, t1.quest FROM gameobject_questender AS t1 LEFT JOIN gameobject_template AS t2 ON t1.id = t2.entry WHERE t1.quest = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/gameobject/questitem/{id}', function($id) {
+
+    $results = DB::connection('world')->select("SELECT * FROM gameobject_questitem WHERE GameObjectEntry = ?", [$id]);
 
   return Response::json($results);
 })
