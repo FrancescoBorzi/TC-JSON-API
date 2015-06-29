@@ -2,175 +2,136 @@
 
 /* DBC */
 
-Route::get('/dbc/achievements_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wod WHERE id = ?", [$id]);
+Route::get('/dbc/achievements/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wod WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/achievements_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wotlk WHERE id = ?", [$id]);
+Route::get('/dbc/areas_and_zones/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wod WHERE m_ID = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wotlk WHERE m_ID = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/areas_and_zones_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wod WHERE m_ID = ?", [$id]);
+Route::get('/dbc/areatriggers/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wod WHERE m_id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wotlk WHERE m_id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/areas_and_zones_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wotlk WHERE m_ID = ?", [$id]);
+Route::get('/dbc/emotes/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wod WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/areatriggers_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wod WHERE m_id = ?", [$id]);
+Route::get('/dbc/factions/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM factions_wod WHERE m_ID = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM factions_wotlk WHERE m_ID = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/areatriggers_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wotlk WHERE m_id = ?", [$id]);
+Route::get('/dbc/languages/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM languages_wod WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM languages_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
-
-Route::get('/dbc/emotes_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wod WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/emotes_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wotlk WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/factions_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM factions_wod WHERE m_ID = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/factions_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM factions_wotlk WHERE m_ID = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/languages_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM languages_wod WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/languages_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM languages_wotlk WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-/* missing `maps_wod` table in sqlite db
-Route::get('/dbc/maps_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM maps_wod WHERE m_ID = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-*/
 
 Route::get('/dbc/maps_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM maps_wotlk WHERE m_ID = ?", [$id]);
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    // TODO add maps_wod
+    $results = DB::connection('sqlite')->select("SELECT * FROM maps_wotlk WHERE m_ID = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM maps_wotlk WHERE m_ID = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/player_titles_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wod WHERE id = ?", [$id]);
+Route::get('/dbc/player_titles/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wod WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/player_titles_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wotlk WHERE id = ?", [$id]);
+Route::get('/dbc/skills/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM skills_wod WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM skills_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/skills_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM skills_wod WHERE id = ?", [$id]);
+Route::get('/dbc/sound_entries/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    // TODO add sound_entries_wod
+    $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wotlk WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/skills_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM skills_wotlk WHERE id = ?", [$id]);
+Route::get('/dbc/spells/{id}', function($id) {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    // TODO add spells_wod
+    $results = DB::connection('sqlite')->select("SELECT * FROM spells_wotlk WHERE ID = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM spells_wotlk WHERE ID = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
-/* missing `sound_entries_wod` table in sqlite db
-Route::get('/dbc/sound_entries_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wod WHERE id = ?", [$id]);
+Route::get('/dbc/taxi_nodes/{id}', function($id) {
 
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-*/
-
-Route::get('/dbc/sound_entries_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wotlk WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-/* missing `spells_wod` table in sqlite db
-Route::get('/dbc/spells_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM spells_wod WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-  */
-
-Route::get('/dbc/spells_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM spells_wotlk WHERE ID = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/taxi_nodes_wod/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wod WHERE id = ?", [$id]);
-
-  return Response::json($results);
-})
-  ->where('id', '[0-9]+');
-
-Route::get('/dbc/taxi_nodes_wotlk/{id}', function($id) {
-  $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wotlk WHERE id = ?", [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wod WHERE id = ?", [$id]);
+  else
+    $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wotlk WHERE id = ?", [$id]);
 
   return Response::json($results);
 })
@@ -301,12 +262,15 @@ Route::get('/search/smart_scripts', function() {
 });
 
 
-Route::get('/search/dbc/achievements_wotlk', function() {
+Route::get('/search/dbc/achievements', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('achievements_wotlk')->select('id', 'name');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('achievements_wod')->select('id', 'name');
+  else
+    $query = DB::connection('sqlite')->table('achievements_wotlk')->select('id', 'name');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
@@ -319,30 +283,15 @@ Route::get('/search/dbc/achievements_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/achievements_wod', function() {
+Route::get('/search/dbc/emotes', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('achievements_wod')->select('id', 'name');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('id')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/emotes_wotlk', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('emotes_wotlk')->select('id', 'emote');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('emotes_wod')->select('id', 'emote');
+  else
+    $query = DB::connection('sqlite')->table('emotes_wotlk')->select('id', 'emote');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
@@ -355,30 +304,15 @@ Route::get('/search/dbc/emotes_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/emotes_wod', function() {
+Route::get('/search/dbc/factions', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('emotes_wod')->select('id', 'emote');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('emote', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('id')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/factions_wotlk', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('factions_wotlk')->select('m_ID', 'm_name_lang_1');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('factions_wod')->select('m_ID', 'm_name_lang_1');
+  else
+    $query = DB::connection('sqlite')->table('factions_wotlk')->select('m_ID', 'm_name_lang_1');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('m_ID', 'LIKE', '%'. $_GET['id'] .'%');
@@ -391,30 +325,15 @@ Route::get('/search/dbc/factions_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/factions_wod', function() {
+Route::get('/search/dbc/languages', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('factions_wotlk')->select('m_ID', 'm_name_lang_1');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('m_ID', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('m_name_lang_1', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('m_ID')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/languages_wotlk', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('languages_wotlk')->select('id', 'name');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('languages_wod')->select('id', 'name');
+  else
+    $query = DB::connection('sqlite')->table('languages_wotlk')->select('id', 'name');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
@@ -427,30 +346,15 @@ Route::get('/search/dbc/languages_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/languages_wod', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('languages_wod')->select('id', 'name');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('id')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/player_titles_wotlk', function() {
+Route::get('/search/dbc/player_titles', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['title']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('player_titles_wotlk')->select('id', 'title');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('player_titles_wod')->select('id', 'title');
+  else
+    $query = DB::connection('sqlite')->table('player_titles_wotlk')->select('id', 'title');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
@@ -463,29 +367,12 @@ Route::get('/search/dbc/player_titles_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/player_titles_wod', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['title']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('player_titles_wod')->select('id', 'title');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['title']) && $_GET['title'] != "")
-    $query->where('title', 'LIKE', '%'. $_GET['title'] .'%');
-
-  $results = $query->orderBy('id')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/sound_entries_wotlk', function() {
+Route::get('/search/dbc/sound_entries', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
+  // TODO add sound_entries_wod
   $query = DB::connection('sqlite')->table('sound_entries_wotlk')->select('id', 'name');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
@@ -499,30 +386,15 @@ Route::get('/search/dbc/sound_entries_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/taxi_nodes_wotlk', function() {
+Route::get('/search/dbc/taxi_nodes', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('taxi_nodes_wotlk')->select('id', 'taxiName');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('taxiName', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('id')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/taxi_nodes_wod', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('taxi_nodes_wod')->select('id', 'taxiName');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('taxi_nodes_wod')->select('id', 'taxiName');
+  else
+    $query = DB::connection('sqlite')->table('taxi_nodes_wotlk')->select('id', 'taxiName');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
@@ -540,6 +412,7 @@ Route::get('/search/dbc/maps_wotlk', function() {
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
+  // TODO add maps_wod
   $query = DB::connection('sqlite')->table('maps_wotlk')->select('m_ID', 'm_MapName_lang1');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
@@ -558,7 +431,10 @@ Route::get('/search/dbc/skills_wotlk', function() {
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('skills_wotlk')->select('id', 'name');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('skills_wod')->select('id', 'name');
+  else
+    $query = DB::connection('sqlite')->table('skills_wotlk')->select('id', 'name');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
@@ -571,29 +447,12 @@ Route::get('/search/dbc/skills_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/skills_wod', function() {
+Route::get('/search/dbc/spells', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('skills_wod')->select('id', 'name');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('id', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('id')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/spells_wotlk', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
+  // TODO add spells_wod
   $query = DB::connection('sqlite')->table('spells_wotlk')->select('ID', 'spellName');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
@@ -612,25 +471,10 @@ Route::get('/search/dbc/areas_and_zones_wotlk', function() {
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('sqlite')->table('areas_and_zones_wotlk')->select('m_ID', 'm_AreaName_lang');
-
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('m_ID', 'LIKE', '%'. $_GET['id'] .'%');
-
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('m_AreaName_lang', 'LIKE', '%'. $_GET['name'] .'%');
-
-  $results = $query->orderBy('m_ID')->get();
-
-  return Response::json($results);
-});
-
-Route::get('/search/dbc/areas_and_zones_wod', function() {
-
-  if ( !isset($_GET['id']) && !isset($_GET['name']) )
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  $query = DB::connection('sqlite')->table('areas_and_zones_wod')->select('m_ID', 'm_AreaName_lang');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $query = DB::connection('sqlite')->table('areas_and_zones_wod')->select('m_ID', 'm_AreaName_lang');
+  else
+    $query = DB::connection('sqlite')->table('areas_and_zones_wotlk')->select('m_ID', 'm_AreaName_lang');
 
   if (isset($_GET['id']) && $_GET['id'] != "")
     $query->where('m_ID', 'LIKE', '%'. $_GET['id'] .'%');
