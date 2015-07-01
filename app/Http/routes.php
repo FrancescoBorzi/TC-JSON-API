@@ -807,6 +807,13 @@ Route::get('/quest/template/{name}', function($name) {
   return Response::json($results);
 });
 
+Route::get('/quest/template/addon/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_template_addon WHERE ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 
 /* Vendors */
 
