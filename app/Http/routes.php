@@ -68,7 +68,7 @@ Route::get('/dbc/languages/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
-Route::get('/dbc/maps_wotlk/{id}', function($id) {
+Route::get('/dbc/maps/{id}', function($id) {
 
   if (isset($_GET['version']) && $_GET['version'] == 6)
     // TODO add maps_wod
@@ -407,7 +407,7 @@ Route::get('/search/dbc/taxi_nodes', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/maps_wotlk', function() {
+Route::get('/search/dbc/maps', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
@@ -426,7 +426,7 @@ Route::get('/search/dbc/maps_wotlk', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/skills_wotlk', function() {
+Route::get('/search/dbc/skills', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
@@ -466,7 +466,7 @@ Route::get('/search/dbc/spells', function() {
   return Response::json($results);
 });
 
-Route::get('/search/dbc/areas_and_zones_wotlk', function() {
+Route::get('/search/dbc/areas_and_zones', function() {
 
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
