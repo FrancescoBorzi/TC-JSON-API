@@ -184,15 +184,30 @@ Route::get('/search/item', function() {
   if ( !isset($_GET['id']) && !isset($_GET['name']) )
     return Response::json(array("error" => "please insert at least one parameter"));
 
-  $query = DB::connection('world')->table('item_template')->select('entry', 'name');
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+  {
+    $query = DB::connection('hotfixes')->table('item_sparse')->select('ID', 'Name');
 
-  if (isset($_GET['id']) && $_GET['id'] != "")
-    $query->where('entry', 'LIKE', '%'. $_GET['id'] .'%');
+    if (isset($_GET['id']) && $_GET['id'] != "")
+      $query->where('ID', 'LIKE', '%'. $_GET['id'] .'%');
 
-  if (isset($_GET['name']) && $_GET['name'] != "")
-    $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
+    if (isset($_GET['name']) && $_GET['name'] != "")
+      $query->where('Name', 'LIKE', '%'. $_GET['name'] .'%');
 
-  $results = $query->orderBy('entry')->get();
+    $results = $query->orderBy('ID')->get();
+  }
+  else
+  {
+    $query = DB::connection('world')->table('item_template')->select('entry', 'name');
+
+    if (isset($_GET['id']) && $_GET['id'] != "")
+      $query->where('entry', 'LIKE', '%'. $_GET['id'] .'%');
+
+    if (isset($_GET['name']) && $_GET['name'] != "")
+      $query->where('name', 'LIKE', '%'. $_GET['name'] .'%');
+
+    $results = $query->orderBy('entry')->get();
+  }
 
   return Response::json($results);
 });
@@ -637,7 +652,7 @@ Route::get('/creature/questender/quest/{id}', function($id) {
 
 Route::get('/creature/questitem/{id}', function($id) {
 
-    $results = DB::connection('world')->select("SELECT * FROM creature_questitem WHERE CreatureEntry = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT * FROM creature_questitem WHERE CreatureEntry = ?", [$id]);
 
   return Response::json($results);
 })
@@ -733,7 +748,7 @@ Route::get('/gameobject/questender/quest/{id}', function($id) {
 
 Route::get('/gameobject/questitem/{id}', function($id) {
 
-    $results = DB::connection('world')->select("SELECT * FROM gameobject_questitem WHERE GameObjectEntry = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT * FROM gameobject_questitem WHERE GameObjectEntry = ?", [$id]);
 
   return Response::json($results);
 })
