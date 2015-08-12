@@ -833,14 +833,17 @@ Route::get('/quest/template/addon/{id}', function($id) {
 /* Vendors */
 
 Route::get('/vendor/creature/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT t1.entry, t1.slot, t1.item, t2.name, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN item_template AS t2 ON t1.item =  t2.entry WHERE t1.entry = ?", [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM npc_vendor WHERE entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select("SELECT t1.entry, t1.slot, t1.item, t2.name, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?", [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/vendor/item/{id}', function($id) {
-  $results = DB::connection('world')->select("SELECT t1.entry, t2.name, t1.slot, t1.item, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN creature_template AS t2 ON t1.entry =  t2.entry WHERE t1.item = ?", [$id]);
+  $results = DB::connection('world')->select("SELECT t1.entry, t2.name, t1.slot, t1.item, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN creature_template AS t2 ON t1.entry = t2.entry WHERE t1.item = ?", [$id]);
 
   return Response::json($results);
 })
@@ -880,77 +883,110 @@ Route::get('/npc_trainer/spell/{id}', function($id) {
 /* Loot templates */
 
 Route::get('/loot/creature/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM creature_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM creature_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM creature_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/reference/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM reference_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM reference_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM reference_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/gameobject/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM gameobject_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM gameobject_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM gameobject_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/item/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM item_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/fishing/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM fishing_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM fishing_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM fishing_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/disenchant/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM disenchant_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/prospecting/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM prospecting_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM prospecting_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM prospecting_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/milling/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM milling_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM milling_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM milling_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/pickpocketing/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM pickpocketing_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM pickpocketing_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM pickpocketing_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/skinning/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM skinning_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM skinning_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM skinning_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/loot/spell/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM spell_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM spell_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM spell_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
 
   return Response::json($results);
 })
@@ -979,7 +1015,10 @@ Route::get('/loot/gameobject/item/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 Route::get('/loot/item/item/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM item_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
 
   return Response::json($results);
 })
@@ -993,7 +1032,10 @@ Route::get('/loot/fishing/item/{id}', function($id) {
   ->where('id', '[0-9]+');
 
 Route::get('/loot/disenchant/item/{id}', function($id) {
-  $results = DB::connection('world')->select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+    $results = DB::connection('world')->select("SELECT * FROM disenchant_loot_template WHERE Entry = ?", [$id]);
+  else
+    $results = DB::connection('world')->select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
 
   return Response::json($results);
 })
