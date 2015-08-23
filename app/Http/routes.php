@@ -829,6 +829,48 @@ Route::get('/quest/template/addon/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/quest/details/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_details WHERE ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/objectives/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_objectives WHERE QuestID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/offer_reward/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_offer_reward WHERE ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/poi/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_poi WHERE QuestID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/poi/points/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_poi_points WHERE QuestID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
+Route::get('/quest/request_items/{id}', function($id) {
+  $results = DB::connection('world')->select("SELECT * FROM quest_request_items WHERE ID = ?", [$id]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 
 /* Vendors */
 
