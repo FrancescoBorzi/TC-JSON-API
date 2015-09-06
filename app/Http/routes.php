@@ -1348,12 +1348,13 @@ Route::get('/search/guid/', function() {
         {
           for ($i = $last + 1; $i < $current; $i++)
           {
-            if ($count >= $_GET['numguid'])
-              break;
 
-            $guid[$count+1] = $i;
+            $guid[$count] = $i;
 
             $count++;
+
+            if ($count >= $_GET['numguid'])
+              break;
           }
 
           break;
@@ -1375,12 +1376,12 @@ Route::get('/search/guid/', function() {
         {
           for ($i = $last + 1; $i < $current; $i++)
           {
-            if ($count >= $_GET['numguid'])
-              break;
-
-            $guid[$count+1] = $i;
+            $guid[$count] = $i;
 
             $count++;
+
+            if ($count >= $_GET['numguid'])
+              break;
           }
         }
         $last = $current;
