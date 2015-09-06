@@ -1272,6 +1272,128 @@ Route::get('/custom/GetQuestTitleByCriteria/', function() {
 });
 
 
+/* Unusued Guid Search */
+
+Route::get('/search/guid/', function() {
+
+  if ( !isset($_GET['startid']) && !isset($_GET['numguid']) && !isset($_GET['table']))
+    return Response::json(array("error" => "please insert the parameter startid, numguid and table"));
+
+  if (isset($_GET['startid']) && $_GET['startid'] != "" && isset($_GET['numguid']) && $_GET['numguid'] != "" && isset($_GET['table']) && $_GET['table'] != "")
+  {
+    $table = $_GET['table'];
+    switch ($table)
+    {
+      case 'creature':
+        $param = "guid";
+        break;
+
+      case 'gameobject':
+        $param = "guid";
+        break;
+
+      case 'waypoint_scripts':
+        $param = "guid";
+        break;
+
+      case 'pool_template':
+        $param = "entry";
+        break;
+
+      case 'game_event':
+        $param = "eventEntry";
+        break;
+
+      case 'creature_equip_template':
+        $param = "CreatureID";
+        break;
+
+      case 'trinity_string':
+        $param = "entry";
+        break;
+    }
+
+    if (isset($_GET['continuos']) and $_GET['continuos'] == "1")
+      $continuos = true;
+    else
+      $continuos = false;
+
+    $query_max_min = sprintf("SELECT MAX(%s), MIN(%s) FROM %s", $param, $param, $table);
+
+    $row = DB::connection('world')->select($query_max_min);
+
+    $MAX_GUID = $row[0]->{'MAX('.$param.')'};
+    $MIN_GUID = $row[0]->{'MIN('.$param.')'};
+
+    $query = sprintf("SELECT %s FROM `%s` WHERE %s >= %d ORDER BY %s ASC", $param, $table, $param, $_GET['startid'], $param);
+    $row = DB::connection('world')->select($query);
+
+    $last = $row[0]->$param;
+
+    $count = 0;
+
+    $json = new ArrayObject(array(), ArrayObject::STD_PROP_LIST);
+    $guid = [];
+
+    if ($continuos)
+    {
+      for ($j = 0; $j < count($row); $j++)
+      {
+        if ($count >= $_GET['numguid'])
+          break;
+
+        $current = $row[$j]->$param;
+
+        if ($current - $last - 1 >= $_GET['numguid'])
+        {
+          for ($i = $last + 1; $i < $current; $i++)
+          {
+            if ($count >= $_GET['numguid'])
+              break;
+
+            $guid[$count+1] = $i;
+
+            $count++;
+          }
+
+          break;
+        }
+
+        $last = $current;
+      }
+    }
+    else
+    {
+      for ($j = 0; $j < count($row); $j++)
+      {
+        if ($count >= $_GET['numguid'])
+          break;
+
+        $current = $row[$j]->$param;
+
+        if ($current != $last + 1)
+        {
+          for ($i = $last + 1; $i < $current; $i++)
+          {
+            if ($count >= $_GET['numguid'])
+              break;
+
+            $guid[$count+1] = $i;
+
+            $count++;
+          }
+        }
+        $last = $current;
+      }
+    }
+
+    $json->guid = $guid;
+    return Response::json($json);
+  }
+
+});
+
+
 /* Other */
 
 Route::get('/version', function() {
