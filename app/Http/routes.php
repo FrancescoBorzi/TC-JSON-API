@@ -1313,10 +1313,10 @@ Route::get('/search/guid/', function() {
         break;
     }
 
-    if (isset($_GET['continuos']) and $_GET['continuos'] == "1")
-      $continuos = true;
+    if (isset($_GET['continuous']) and $_GET['continuous'] == "1")
+      $continuous = true;
     else
-      $continuos = false;
+      $continuous = false;
 
     $query_max_min = sprintf("SELECT MAX(%s), MIN(%s) FROM %s", $param, $param, $table);
 
@@ -1335,7 +1335,7 @@ Route::get('/search/guid/', function() {
     $json = new ArrayObject(array(), ArrayObject::STD_PROP_LIST);
     $guid = [];
 
-    if ($continuos)
+    if ($continuous)
     {
       for ($j = 0; $j < count($row); $j++)
       {
