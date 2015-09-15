@@ -251,6 +251,29 @@ Route::get('/search/character', function() {
   return Response::json($results);
 });
 
+Route::get('/search/tickets', function() {
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+  {
+    // TODO
+    return;
+  }
+  else
+  {
+    $query = DB::connection('characters')->table('characters')->join('gm_ticket', 'characters.guid', '=', 'gm_ticket.playerGuid');
+
+    if (isset($_GET['closedBy']) && $_GET['closedBy'] != "")
+      $query->where('closedBy', '=', $_GET['closedBy']);
+    
+    if (isset($_GET['PARAM']) && $_GET['PARAM'] != "")
+      $query->where('PARAM', 'LIKE', '%'. $_GET['PARAM'] .'%');
+
+    $results = $query->select('gm_ticket.*', 'characters.online')->orderBy('gm_ticket.id')->get();
+  }
+
+  return Response::json($results);
+});
+
 Route::get('/search/smart_scripts', function() {
 
   if (
