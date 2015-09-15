@@ -253,6 +253,8 @@ Route::get('/search/character', function() {
 
 Route::get('/search/tickets', function() {
 
+  $query = DB::connection('characters')->table('characters');
+
   if (isset($_GET['version']) && $_GET['version'] == 6)
   {
     // TODO
@@ -260,13 +262,40 @@ Route::get('/search/tickets', function() {
   }
   else
   {
-    $query = DB::connection('characters')->table('characters')->join('gm_ticket', 'characters.guid', '=', 'gm_ticket.playerGuid');
+    $query->join('gm_ticket', 'characters.guid', '=', 'gm_ticket.playerGuid');
+
+    if (isset($_GET['online']) && $_GET['online'] != "")
+      $query->where('characters.online', '=', $_GET['online']);
 
     if (isset($_GET['closedBy']) && $_GET['closedBy'] != "")
-      $query->where('closedBy', '=', $_GET['closedBy']);
-    
-    if (isset($_GET['PARAM']) && $_GET['PARAM'] != "")
-      $query->where('PARAM', 'LIKE', '%'. $_GET['PARAM'] .'%');
+      $query->where('gm_ticket.closedBy', '=', $_GET['closedBy']);
+
+    if (isset($_GET['createTime']) && $_GET['createTime'] != "")
+      $query->where('gm_ticket.createTime', '=', $_GET['createTime']);
+
+    if (isset($_GET['lastModifiedTime']) && $_GET['lastModifiedTime'] != "")
+      $query->where('gm_ticket.lastModifiedTime', '=', $_GET['lastModifiedTime']);
+
+    if (isset($_GET['id']) && $_GET['id'] != "")
+      $query->where('gm_ticket.id', 'LIKE', '%'. $_GET['id'] .'%');
+
+    if (isset($_GET['playerGuid']) && $_GET['playerGuid'] != "")
+      $query->where('gm_ticket.playerGuid', 'LIKE', '%'. $_GET['playerGuid'] .'%');
+
+    if (isset($_GET['name']) && $_GET['name'] != "")
+      $query->where('gm_ticket.name', 'LIKE', '%'. $_GET['name'] .'%');
+
+    if (isset($_GET['description']) && $_GET['description'] != "")
+      $query->where('gm_ticket.description', 'LIKE', '%'. $_GET['description'] .'%');
+
+    if (isset($_GET['assignedTo']) && $_GET['assignedTo'] != "")
+      $query->where('gm_ticket.assignedTo', 'LIKE', '%'. $_GET['assignedTo'] .'%');
+
+    if (isset($_GET['comment']) && $_GET['comment'] != "")
+      $query->where('gm_ticket.comment', 'LIKE', '%'. $_GET['comment'] .'%');
+
+    if (isset($_GET['response']) && $_GET['response'] != "")
+      $query->where('gm_ticket.response', 'LIKE', '%'. $_GET['response'] .'%');
 
     $results = $query->select('gm_ticket.*', 'characters.online')->orderBy('gm_ticket.id')->get();
   }
