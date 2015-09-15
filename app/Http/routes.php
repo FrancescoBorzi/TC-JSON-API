@@ -1299,14 +1299,14 @@ Route::get('/uptime', function() {
   {
     $uptime = $result[0]->{'uptime'};
 
-    $Days  = round(($uptime / 24 / 60 / 60));
-    $Hours = round(($uptime / 60 / 60));
-    $Min   = round(($uptime / 60));
+    $Days  = floor(($uptime / 24 / 60 / 60));
+    $Hours = floor(($uptime / 60 / 60));
+    $Min   = floor(($uptime / 60));
 
     if ($uptime > 86400)
-      $uptime = $Days . " Days " . ($Hours-($Days*24))  . " Hours " . ($Min - ( ($Days*24*60) + (($Hours-($Days*24))*60) ) ) . " Min";
+      $uptime = $Days . " Days " . ( $Hours - ($Days*24) )  . " Hours " . ($Min - ( ($Days*24*60) + ( ( $Hours - ($Days*24) ) * 60 ) ) ) . " Min";
     elseif ($uptime > 3600)
-      $uptime = $Hours . " Hours " . ($Min - ($Hours*60)) . " Min";
+      $uptime = $Hours . " Hours " . ( $Min - ($Hours*60) ) . " Min";
     else
       $uptime = $Min . " Min";
 
