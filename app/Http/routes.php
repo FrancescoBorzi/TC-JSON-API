@@ -1282,6 +1282,33 @@ Route::get('/online', function() {
   return Response::json($results);
 });
 
+/* Top Honor */
+
+Route::get('/tophonor', function() {
+
+  if (isset($_GET['startplayer']) && $_GET['startplayer'] != "")
+    $startPlayer = $_GET['startplayer'];
+  else
+    $startPlayer = 0;
+
+  if (isset($_GET['numplayer']) && $_GET['numplayer'] != "")
+    $numPlayer = $_GET['numplayer'];
+  else
+    $numPlayer = 100;
+
+  if (isset($_GET['level']) && $_GET['level'] != "")
+    $level = $_GET['level'];
+  else
+    $level = "level";
+
+  $query = sprintf("SELECT name,race,class,level,totalKills FROM characters WHERE level = %s ORDER BY totalKills DESC LIMIT %d , %d", $level, $startPlayer, $numPlayer);
+
+  $result = DB::connection('characters')->select($query);
+
+  return Response::json($result);
+});
+
+
 /* Auth */
 
 Route::get('/uptime', function() {
