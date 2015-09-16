@@ -1282,6 +1282,40 @@ Route::get('/online', function() {
   return Response::json($results);
 });
 
+/* Auth */
+
+Route::get('/uptime', function() {
+
+  if (isset($_GET['realmid']) && $_GET['realmid'] != "")
+    $realmid = $_GET['realmid'];
+  else
+    $realmid = 1;
+
+  $query = sprintf("SELECT * FROM uptime WHERE realmid = %d ORDER BY starttime DESC LIMIT 1", $realmid);
+
+  $result = DB::connection('auth')->select($query);
+
+  if (isset($_GET['time']))
+  {
+    $uptime = $result[0]->{'uptime'};
+
+    $Days  = floor(($uptime / 24 / 60 / 60));
+    $Hours = floor(($uptime / 60 / 60));
+    $Min   = floor(($uptime / 60));
+
+    if ($uptime > 86400)
+      $uptime = $Days . " Days " . ( $Hours - ($Days*24) )  . " Hours " . ($Min - ( ($Days*24*60) + ( ( $Hours - ($Days*24) ) * 60 ) ) ) . " Min";
+    elseif ($uptime > 3600)
+      $uptime = $Hours . " Hours " . ( $Min - ($Hours*60) ) . " Min";
+    else
+      $uptime = $Min . " Min";
+
+    $result[0]->{'uptime'} = $uptime;
+  }
+
+  return Response::json($result);
+});
+
 
 /* Custom queries for specific applications */
 
