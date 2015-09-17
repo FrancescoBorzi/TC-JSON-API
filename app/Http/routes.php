@@ -1308,6 +1308,43 @@ Route::get('/tophonor', function() {
   return Response::json($result);
 });
 
+/* Arena routes */
+
+Route::get('/character_arena_stats/{guid}', function($guid) {
+  $results = DB::connection('characters')->select("SELECT * FROM character_arena_stats WHERE guid = ?", [$guid]);
+
+  return Response::json($results);
+})
+  ->where('guid', '[0-9]+');
+
+Route::get('/arena_team_member', function() {
+
+  if(!isset($_GET['teamid']) && !isset($_GET['guid']))
+    return Response::json(array("error" => "please insert at least one parameter"));
+
+  if (isset($_GET['teamid']) && $_GET['teamid'] != "")
+    $arenateamid = $_GET['teamid'];
+  else
+    $arenateamid = "arenateamid";
+
+  if (isset($_GET['guid']) && $_GET['guid'] != "")
+    $guid = $_GET['guid'];
+  else
+    $guid = "guid";
+
+  $query = sprintf("SELECT * FROM arena_team_member WHERE arenateamid = %s AND guid = %s", $arenateamid, $guid);
+  $result = DB::connection('characters')->select($query);
+
+  return Response::json($result);
+});
+
+Route::get('/arena_team/{arenaTeamId}', function($arenaTeamId) {
+  $results = DB::connection('characters')->select("SELECT * FROM arena_team WHERE arenaTeamId = ?", [$arenaTeamId]);
+
+  return Response::json($results);
+})
+  ->where('guid', '[0-9]+');
+
 
 /* Auth */
 
