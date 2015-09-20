@@ -1285,6 +1285,27 @@ Route::get('/online', function() {
   return Response::json($results);
 });
 
+
+Route::get('/auction', function() {
+
+  if (isset($_GET['itemfrom']) && $_GET['itemfrom'] != "")
+    $itemFrom = $_GET['itemfrom'];
+  else
+    $itemFrom = 0;
+
+  if (isset($_GET['numitem']) && $_GET['numitem'] != "")
+    $numItem = $_GET['numitem'];
+  else
+    $numItem = 100;
+
+  $query = sprintf("SELECT * FROM auctionhouse LIMIT %d , %d", $itemFrom, $numItem);
+
+  $result = DB::connection('characters')->select($query);
+
+  return Response::json($result);
+});
+
+
 /* Top Honor */
 
 Route::get('/tophonor', function() {
