@@ -1302,6 +1302,60 @@ Route::get('/auction', function() {
 
   $result = DB::connection('characters')->select($query);
 
+  /*
+  buyoutprice
+  startbid
+  lastbid
+  */
+
+  if (isset($_GET['money']))
+  {
+    for ($i = 0; $i < count($result); $i++)
+    {
+      $buyoutprice = $result[$i]->{'buyoutprice'};
+      $startbid    = $result[$i]->{'startbid'};
+      $lastbid     = $result[$i]->{'lastbid'};
+
+      if ($startbid > 9999)
+      {
+        $startbid = substr($startbid, 0, -4) . " gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
+
+        if ($buyoutprice == "0")
+          $buyoutprice = "00 gold 00 silver 00 copper";
+        else
+          $buyoutprice = substr($buyoutprice, 0, -4) . " gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
+
+        if ($lastbid == "0")
+          $lastbid = "00 gold 00 silver 00 copper";
+        else
+          $lastbid = substr($lastbid, 0, -4) . " gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
+      }
+      elseif ($startbid > 99)
+      {
+        $startbid    = "00 gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
+
+        if ($buyoutprice == "0")
+          $buyoutprice = "00 gold 00 silver 00 copper";
+        else
+          $buyoutprice = "00 gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
+        if ($lastbid == "0")
+          $lastbid = "00 gold 00 silver 00 copper";
+        else
+          $lastbid     = "00 gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
+      }
+      else
+      {
+        $startbid    = "00 gold 00 silver " . substr($startbid, -2) . " copper";
+        $buyoutprice = "00 gold 00 silver " . substr($buyoutprice, -2) . " copper";
+        $lastbid     = "00 gold 00 silver " . substr($lastbid, -2) . " copper";
+      }
+
+      $result[$i]->{'buyoutprice'} = $buyoutprice;
+      $result[$i]->{'startbid'}    = $startbid;
+      $result[$i]->{'lastbid'}     = $lastbid;
+    }
+  }
+
   return Response::json($result);
 });
 
