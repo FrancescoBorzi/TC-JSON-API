@@ -1302,12 +1302,6 @@ Route::get('/auction', function() {
 
   $result = DB::connection('characters')->select($query);
 
-  /*
-  buyoutprice
-  startbid
-  lastbid
-  */
-
   if (isset($_GET['money']))
   {
     for ($i = 0; $i < count($result); $i++)
@@ -1353,6 +1347,26 @@ Route::get('/auction', function() {
       $result[$i]->{'buyoutprice'} = $buyoutprice;
       $result[$i]->{'startbid'}    = $startbid;
       $result[$i]->{'lastbid'}     = $lastbid;
+    }
+  }
+
+  if (isset($_GET['playername']))
+  {
+    for ($i = 0; $i < count($result); $i++)
+    {
+      $itemowner = $result[$i]->{'itemowner'};
+      $buyguid   = $result[$i]->{'buyguid'};
+
+      $query_playername = sprintf("SELECT name FROM characters WHERE guid = %d", $itemowner);
+      $result_playername = DB::connection('characters')->select($query_playername);
+      $result[$i]->{'itemowner'} = $result_playername[0]->{'name'};
+
+      if ($buyguid != 0)
+      {
+        $query_playername = sprintf("SELECT name FROM characters WHERE guid = %d", $buyguid);
+        $result_playername = DB::connection('characters')->select($query_playername);
+        $result[$i]->{'buyguid'} = $result_playername[0]->{'name'};
+      }
     }
   }
 
