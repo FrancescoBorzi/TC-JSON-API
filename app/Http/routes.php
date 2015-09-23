@@ -1319,9 +1319,7 @@ Route::get('/auction', function() {
         else
           $buyoutprice = substr($buyoutprice, 0, -4) . " gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
 
-        if ($lastbid == "0")
-          $lastbid = "00 gold 00 silver 00 copper";
-        else
+        if ($lastbid != "0")
           $lastbid = substr($lastbid, 0, -4) . " gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
       }
       elseif ($startbid > 99)
@@ -1366,6 +1364,27 @@ Route::get('/auction', function() {
         $query_playername = sprintf("SELECT name FROM characters WHERE guid = %d", $buyguid);
         $result_playername = DB::connection('characters')->select($query_playername);
         $result[$i]->{'buyguid'} = $result_playername[0]->{'name'};
+      }
+    }
+  }
+
+  if (isset($_GET['version']) && $_GET['version'] == 6)
+  { /* TO DO */ }
+  else
+  {
+    if (isset($_GET['itemname']))
+    {
+      for ($i = 0; $i < count($result); $i++)
+      {
+        $itemguid = $result[$i]->{'itemguid'};
+
+        $query_itemName = sprintf("SELECT itemEntry FROM item_instance WHERE guid = %d", $itemguid);
+        $result_itemName = DB::connection('characters')->select($query_itemName);
+
+        $query_itemName = sprintf("SELECT name FROM item_template WHERE entry = %d", $result_itemName[0]->{'itemEntry'});
+        $result_itemName = DB::connection('world')->select($query_itemName);
+
+        $result[$i]->{'itemguid'} = $result_itemName[0]->{'name'};
       }
     }
   }
