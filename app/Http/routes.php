@@ -1315,7 +1315,7 @@ Route::get('/auction', function() {
         $startbid = substr($startbid, 0, -4) . " gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
 
         if ($buyoutprice == "0")
-          $buyoutprice = "00 gold 00 silver 00 copper";
+          $buyoutprice = "";
         else
           $buyoutprice = substr($buyoutprice, 0, -4) . " gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
 
@@ -1327,19 +1327,24 @@ Route::get('/auction', function() {
         $startbid    = "00 gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
 
         if ($buyoutprice == "0")
-          $buyoutprice = "00 gold 00 silver 00 copper";
+          $buyoutprice = "";
         else
           $buyoutprice = "00 gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
-        if ($lastbid == "0")
-          $lastbid = "00 gold 00 silver 00 copper";
-        else
+
+        if ($lastbid != "0")
           $lastbid     = "00 gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
       }
       else
       {
         $startbid    = "00 gold 00 silver " . substr($startbid, -2) . " copper";
-        $buyoutprice = "00 gold 00 silver " . substr($buyoutprice, -2) . " copper";
-        $lastbid     = "00 gold 00 silver " . substr($lastbid, -2) . " copper";
+
+        if ($buyoutprice == "0")
+          $buyoutprice = "";
+        else
+          $buyoutprice = "00 gold 00 silver " . substr($buyoutprice, -2) . " copper";
+
+        if ($lastbid != "0")
+          $lastbid     = "00 gold 00 silver " . substr($lastbid, -2) . " copper";
       }
 
       $result[$i]->{'buyoutprice'} = $buyoutprice;
