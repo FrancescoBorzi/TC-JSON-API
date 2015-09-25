@@ -1394,6 +1394,22 @@ Route::get('/auction', function() {
     }
   }
 
+  if (isset($_GET['time']))
+  {
+    for ($i = 0; $i < count($result); $i++)
+    {
+      $datetime1 = new DateTime();
+      $datetime2 = new DateTime('@'.$result[$i]->{'time'});
+      $interval = $datetime1->diff($datetime2);
+      $timeleft = $interval->format('%a days %h hours %i minutes %S seconds');
+
+      $empties = array('0 days ', '0 hours ', '0 minutes ', '0 seconds ');
+      $timeleft = str_replace($empties, '', $timeleft);
+
+      $result[$i]->{'time'} = $timeleft;
+    }
+  }
+
   return Response::json($result);
 });
 
