@@ -1362,7 +1362,11 @@ Route::get('/auction', function() {
 
       $query_playername = sprintf("SELECT name FROM characters WHERE guid = %d", $itemowner);
       $result_playername = DB::connection('characters')->select($query_playername);
-      $result[$i]->{'itemowner'} = $result_playername[0]->{'name'};
+
+      if ($itemowner == 0)
+        $result[$i]->{'itemowner'} = "AuctionHouseBot";
+      else
+        $result[$i]->{'itemowner'} = $result_playername[0]->{'name'};
 
       if ($buyguid != 0)
       {
