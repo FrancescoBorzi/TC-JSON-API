@@ -263,6 +263,9 @@ Route::get('/search/tickets', function() {
   {
     $query->join('gm_ticket', 'characters.guid', '=', 'gm_ticket.playerGuid');
 
+    if (isset($_GET['unresolved']) && $_GET['unresolved'] == 1)
+      $query->where('gm_ticket.closedBy', '=', 0)->where('gm_ticket.completed', '=', 0);
+
     if (isset($_GET['online']) && $_GET['online'] != "")
       $query->where('characters.online', '=', $_GET['online']);
 
