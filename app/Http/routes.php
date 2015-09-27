@@ -1686,7 +1686,7 @@ Route::get('/version', function() {
 });
 
 Route::get('/api', function() {
-  return Response::json(array("api_version" => "0.6", "api_branch" => "master"));
+  return Response::json(array("api_version" => "0.7", "api_branch" => "master"));
 });
 
 
