@@ -4,21 +4,16 @@
 
 Route::get('/dbc/achievements/{id}', function($id) {
 
-  if (isset($_GET['version']) && $_GET['version'] == 6)
-    $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wod WHERE id = ?", [$id]);
-  else
-    $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wotlk WHERE id = ?", [$id]);
-
+  if (isset($_GET['version']))
+    $results = DB::connection('sqlite')->select("SELECT * FROM  id = ?", [$id]);
   return Response::json($results);
 })
   ->where('id', '[0-9]+');
 
 Route::get('/dbc/areas_and_zones/{id}', function($id) {
 
-  if (isset($_GET['version']) && $_GET['version'] == 6)
-    $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wod WHERE m_ID = ?", [$id]);
-  else
-    $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wotlk WHERE m_ID = ?", [$id]);
+  if (isset($_GET['version']))
+    $results = DB::connection('sqlite')->select("SELECT * FROM ".db_parsing($_GET['version'],'dbc_areas_and_zones')." WHERE m_ID = ?", [$id]);
 
   return Response::json($results);
 })
