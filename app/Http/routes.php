@@ -1484,6 +1484,11 @@ Route::get('/arena_team/{arenaTeamId}', function($arenaTeamId) {
 })
   ->where('guid', '[0-9]+');
 
+Route::get('/arena_team/', function() {
+  $results = DB::connection('characters')->select("SELECT * FROM arena_team ORDER BY rating");
+  return Response::json($results);
+});
+
 
 /* Auth */
 
