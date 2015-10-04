@@ -1458,14 +1458,14 @@ Route::get('/arena_team/id/{arenaTeamId}', function($arenaTeamId) {
   ->where('arenaTeamId', '[0-9]+');
 
 Route::get('/arena_team/type/{type}/', function($type) {
-  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS captainName FROM arena_team AS t1 INNER JOIN characters AS t2 ON t1.captainGuid = t2.guid WHERE t1.type = ? ORDER BY rating DESC", [$type]);
+  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS captainName, t2.race AS captainRace FROM arena_team AS t1 INNER JOIN characters AS t2 ON t1.captainGuid = t2.guid WHERE t1.type = ? ORDER BY rating DESC", [$type]);
 
   return Response::json($results);
 })
   ->where('type', '[0-9]+');
 
 Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
-  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS name FROM arena_team_member AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
+  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS name, t2.class AS class, t2.race AS race FROM arena_team_member AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
 
   return Response::json($results);
 })
