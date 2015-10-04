@@ -1447,47 +1447,29 @@ Route::get('/tophonor', function() {
   return Response::json($result);
 });
 
+
 /* Arena routes */
 
-Route::get('/character_arena_stats/{guid}', function($guid) {
-  $results = DB::connection('characters')->select("SELECT * FROM character_arena_stats WHERE guid = ?", [$guid]);
+Route::get('/arena_team/id/{arenaTeamId}', function($arenaTeamId) {
+  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS captainName FROM arena_team AS t1 INNER JOIN characters AS t2 ON t1.captainGuid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
 
   return Response::json($results);
 })
-  ->where('guid', '[0-9]+');
+  ->where('arenaTeamId', '[0-9]+');
 
-Route::get('/arena_team_member', function() {
-
-  if(!isset($_GET['teamid']) && !isset($_GET['guid']))
-    return Response::json(array("error" => "please insert at least one parameter"));
-
-  if (isset($_GET['teamid']) && $_GET['teamid'] != "")
-    $arenateamid = $_GET['teamid'];
-  else
-    $arenateamid = "arenateamid";
-
-  if (isset($_GET['guid']) && $_GET['guid'] != "")
-    $guid = $_GET['guid'];
-  else
-    $guid = "guid";
-
-  $query = sprintf("SELECT * FROM arena_team_member WHERE arenateamid = %s AND guid = %s", $arenateamid, $guid);
-  $result = DB::connection('characters')->select($query);
-
-  return Response::json($result);
-});
-
-Route::get('/arena_team/{arenaTeamId}', function($arenaTeamId) {
-  $results = DB::connection('characters')->select("SELECT * FROM arena_team WHERE arenaTeamId = ?", [$arenaTeamId]);
+Route::get('/arena_team/type/{type}/', function($type) {
+  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS captainName FROM arena_team AS t1 INNER JOIN characters AS t2 ON t1.captainGuid = t2.guid WHERE t1.type = ? ORDER BY rating DESC", [$type]);
 
   return Response::json($results);
 })
-  ->where('guid', '[0-9]+');
+  ->where('type', '[0-9]+');
 
-Route::get('/arena_team/', function() {
-  $results = DB::connection('characters')->select("SELECT * FROM arena_team ORDER BY rating");
+Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
+  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS name FROM arena_team_member AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
+
   return Response::json($results);
-});
+})
+  ->where('arenaTeamId', '[0-9]+');
 
 
 /* Auth */
