@@ -1451,7 +1451,7 @@ Route::get('/tophonor', function() {
 /* Arena routes */
 
 Route::get('/arena_team/id/{arenaTeamId}', function($arenaTeamId) {
-  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS captainName FROM arena_team AS t1 INNER JOIN characters AS t2 ON t1.captainGuid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
+  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS captainName, t2.race AS captainRace FROM arena_team AS t1 INNER JOIN characters AS t2 ON t1.captainGuid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
 
   return Response::json($results);
 })
