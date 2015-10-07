@@ -1684,13 +1684,13 @@ Route::get('/api', function() {
 });
 
 Route::get('topgm/ticket/account', function() {
-  $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM ' . env('DB_CHARACTERS') . '.gm_ticket AS t1 INNER JOIN ' . env('DB_CHARACTERS') . '.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN ' . env('DB_AUTH') . '.account AS t3 ON t2.account = t3.id GROUP BY t3.username ORDER BY count DESC;');
+  $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t3.username ORDER BY count DESC;');
 
   return Response::json($results);
 });
 
 Route::get('topgm/ticket/character', function() {
-  $results = DB::select('SELECT t2.name, t3.username AS account, COUNT(*) AS count FROM ' . env('DB_CHARACTERS') . '.gm_ticket AS t1 INNER JOIN ' . env('DB_CHARACTERS') . '.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN ' . env('DB_AUTH') . '.account AS t3 ON t2.account = t3.id GROUP BY t2.guid ORDER BY count DESC;');
+  $results = DB::select('SELECT t2.name, t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t2.guid ORDER BY count DESC;');
 
   return Response::json($results);
 });
