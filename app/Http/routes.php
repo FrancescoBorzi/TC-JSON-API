@@ -330,6 +330,23 @@ Route::get('/search/smart_scripts', function() {
   return Response::json($results);
 });
 
+Route::get('/search/worldstates', function() {
+
+  if (
+    !isset($_GET['comment'])
+  ) {
+    return Response::json(array("error" => "please insert at least one parameter"));
+  }
+
+  $query = DB::connection('characters')->table('worldstates')->select('entry', 'value', 'comment');
+
+  if (isset($_GET['comment']) && $_GET['comment'] != "")
+    $query->where('comment', 'LIKE', '%'. $_GET['comment'] .'%');
+
+  $results = $query->orderBy('value')->get();
+
+  return Response::json($results);
+});
 
 Route::get('/search/dbc/achievements', function() {
 
