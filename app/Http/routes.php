@@ -1276,6 +1276,13 @@ Route::get('/loot/template/spell/{id}', function($id) {
 
 /* Characters */
 
+Route::get('/battleground/deserters/recent/{count}', function($count) {
+  $results = DB::connection('characters')->select('SELECT t1.guid, t2.name, t2.level, t1.type, t1.datetime FROM battleground_deserters AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid ORDER BY datetime DESC LIMIT 0,?', [$count]);
+
+  return Response::json($results);
+})
+  ->where('id', '[0-9]+');
+
 Route::get('/characters/{guid}', function($guid) {
 
   if (isset($_GET['no_extra_fields']) && $_GET['no_extra_fields'] == 1)
