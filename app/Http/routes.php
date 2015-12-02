@@ -1713,6 +1713,13 @@ Route::get('topgm/ticket/account', function() {
   return Response::json($results);
 });
 
+Route::get('topgm/ticket/account/month/{diff}', function($diff) {
+  $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id WHERE MONTH(FROM_UNIXTIME(t1.lastModifiedTime)) = MONTH(NOW() + INTERVAL -? MONTH) GROUP BY t3.username ORDER BY count DESC;', [$diff]);
+
+  return Response::json($results);
+})
+  ->where('diff', '[0-9]+');
+
 Route::get('topgm/ticket/character', function() {
   $results = DB::select('SELECT t2.name, t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t2.guid ORDER BY count DESC;');
 
