@@ -1726,5 +1726,16 @@ Route::get('topgm/ticket/character', function() {
   return Response::json($results);
 });
 
+Route::get('ticket/recent/{count}', function($count) {
+
+  $query = DB::connection('characters')->table('characters');
+
+  $query->join('gm_ticket', 'characters.guid', '=', 'gm_ticket.resolvedBy');
+
+  $results = $query->select('gm_ticket.*', 'characters.name AS resolvedByName')->where('gm_ticket.closedBy', '!=', 0)->orWhere('gm_ticket.completed', '!=', 0)->orderBy('gm_ticket.id', 'desc')->take($count)->get();
+
+  return Response::json($results);
+});
+
 Route::get('/', 'WelcomeController@index');
 
