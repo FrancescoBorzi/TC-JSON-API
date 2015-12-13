@@ -1489,7 +1489,19 @@ Route::get('/arena_team/type/{type}/', function($type) {
   ->where('type', '[0-9]+');
 
 Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
-  $results = DB::connection('characters')->select("SELECT t1.*, t2.name AS name, t2.class AS class, t2.race AS race, t2.gender as gender FROM arena_team_member AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
+  $results = DB::connection('characters')->select("
+  SELECT t1.*, t4.matchmakerRating AS matchmakerRating, t2.name AS name, t2.class AS class, t2.race AS race, t2.gender as gender
+  FROM arena_team_member AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid
+  INNER JOIN arena_team AS t3 ON t1.arenaTeamId = t3.arenaTeamId
+  LEFT JOIN character_arena_stats AS t4 ON
+  (t1.guid = t4.guid AND t3.type =
+    (CASE t4.slot
+      WHEN 0 THEN 2
+      WHEN 1 THEN 3
+      WHEN 2 THEN 5
+    END)
+  )
+  WHERE t1.arenaTeamId = ?", [$arenaTeamId]);
 
   return Response::json($results);
 })
