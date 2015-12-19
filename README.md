@@ -27,4 +27,4 @@ If you don't want to code, you can simply help us by telling us your suggestion 
 
 ### License
 
-The TrinityCore JSON API is open-sourced software licensed under the [GNU GPL license](https://github.com/ShinDarth/TC-JSON-API/blob/master/LICENSE).
+The TrinityCore JSON API is open-sourced software licensed under the [GNU AGPL license](https://github.com/ShinDarth/TC-JSON-API/blob/master/LICENSE).
