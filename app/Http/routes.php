@@ -262,7 +262,7 @@ Route::get('/search/tickets', function() {
   else
   {
     $query->join('characters AS player', 'player.guid', '=', 'gm_ticket.playerGuid');
-    $query->join('characters AS assign', 'assign.guid', '=', 'gm_ticket.assignedTo');
+    $query->leftJoin('characters AS assign', 'assign.guid', '=', 'gm_ticket.assignedTo');
 
     if (isset($_GET['unresolved']) && $_GET['unresolved'] == 1)
       $query->where('gm_ticket.closedBy', '=', 0)->where('gm_ticket.completed', '=', 0);
