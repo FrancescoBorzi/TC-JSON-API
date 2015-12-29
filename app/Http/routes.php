@@ -1544,6 +1544,14 @@ Route::get('/uptime', function() {
 });
 
 
+Route::get('/pulse/{days}', function($days) {
+  $results = DB::connection('auth')->select("SELECT COUNT(*) as accounts, COUNT(DISTINCT(last_ip)) AS IPs FROM account WHERE DATEDIFF(NOW(), last_login) < ?", [$days]);
+
+  return Response::json($results);
+})
+  ->where('days', '[0-9]+');
+
+
 /* Custom queries for specific applications */
 
 Route::get('/custom/GetQuestTitleByCriteria/', function() {
