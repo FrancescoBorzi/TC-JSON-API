@@ -18,6 +18,23 @@ You may also need:
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 
+### Installing mcrypt on Ubuntu
+
+To install mcrypt from command line need to run:
+
+`sudo apt-get install php5-mcrypt`
+
+On Ubuntu when you run sudo apt-get install php5-mcrypt it doesn't actually install the extension into the mods-available. You'll need to symlink it with the follow command:
+
+
+`sudo ln -s /etc/php5/conf.d/mcrypt.ini /etc/php5/mods-available/mcrypt.ini`
+
+Well, now you must enable the mod with:
+
+`sudo php5enmod mcrypt`
+`sudo service apache2 restart`
+
+
 ## 1) [Easy] Get full version archive of latest release
 
 - Download latest "Full" version zip archive: https://github.com/ShinDarth/TC-JSON-API/releases/
@@ -43,7 +60,7 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 `composer install`
 
 - Copy the file **.env.example** to **.env**
- 
+
 ## 2) Configure the API
 
 - Open **.env** with a text editor and set properly DB_* parameters, example:
