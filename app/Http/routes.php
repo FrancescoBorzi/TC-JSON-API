@@ -1326,120 +1326,83 @@ Route::get('/auction', function() {
   else
     $numItem = 100;
 
-  $query = sprintf("SELECT * FROM auctionhouse LIMIT %d , %d", $itemFrom, $numItem);
-
-  $result = DB::connection('characters')->select($query);
-
-  if (isset($_GET['money']))
-  {
-    for ($i = 0; $i < count($result); $i++)
-    {
-      $buyoutprice = $result[$i]->{'buyoutprice'};
-      $startbid    = $result[$i]->{'startbid'};
-      $lastbid     = $result[$i]->{'lastbid'};
-
-      if ($startbid > 9999)
-      {
-        $startbid = substr($startbid, 0, -4) . " gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
-
-        if ($buyoutprice == "0")
-          $buyoutprice = "";
-        else
-          $buyoutprice = substr($buyoutprice, 0, -4) . " gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
-
-        if ($lastbid != "0")
-          $lastbid = substr($lastbid, 0, -4) . " gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
-      }
-      elseif ($startbid > 99)
-      {
-        $startbid    = "00 gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
-
-        if ($buyoutprice == "0")
-          $buyoutprice = "";
-        else
-          $buyoutprice = "00 gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
-
-        if ($lastbid != "0")
-          $lastbid     = "00 gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
-      }
-      else
-      {
-        $startbid    = "00 gold 00 silver " . substr($startbid, -2) . " copper";
-
-        if ($buyoutprice == "0")
-          $buyoutprice = "";
-        else
-          $buyoutprice = "00 gold 00 silver " . substr($buyoutprice, -2) . " copper";
-
-        if ($lastbid != "0")
-          $lastbid     = "00 gold 00 silver " . substr($lastbid, -2) . " copper";
-      }
-
-      $result[$i]->{'buyoutprice'} = $buyoutprice;
-      $result[$i]->{'startbid'}    = $startbid;
-      $result[$i]->{'lastbid'}     = $lastbid;
-    }
-  }
-
-  if (isset($_GET['playername']))
-  {
-    for ($i = 0; $i < count($result); $i++)
-    {
-      $itemowner = $result[$i]->{'itemowner'};
-      $buyguid   = $result[$i]->{'buyguid'};
-
-      $query_playername = sprintf("SELECT name FROM characters WHERE guid = %d", $itemowner);
-      $result_playername = DB::connection('characters')->select($query_playername);
-
-      if ($itemowner == 0)
-        $result[$i]->{'itemowner'} = "AuctionHouseBot";
-      else
-        $result[$i]->{'itemowner'} = $result_playername[0]->{'name'};
-
-      if ($buyguid != 0)
-      {
-        $query_playername = sprintf("SELECT name FROM characters WHERE guid = %d", $buyguid);
-        $result_playername = DB::connection('characters')->select($query_playername);
-        $result[$i]->{'buyguid'} = $result_playername[0]->{'name'};
-      }
-    }
-  }
-
   if (isset($_GET['version']) && $_GET['version'] == 6)
-  { /* TO DO */ }
+  {
+    $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,count,lastbid,startbid,buyoutprice,deposit,time
+    FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
+    LEFT JOIN ' . env('DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
+    LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
+    LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);    
+  }
   else
   {
-    if (isset($_GET['itemname']))
-    {
-      for ($i = 0; $i < count($result); $i++)
-      {
-        $itemguid = $result[$i]->{'itemguid'};
-
-        $query_itemName = sprintf("SELECT itemEntry FROM item_instance WHERE guid = %d", $itemguid);
-        $result_itemName = DB::connection('characters')->select($query_itemName);
-
-        $query_itemName = sprintf("SELECT name FROM item_template WHERE entry = %d", $result_itemName[0]->{'itemEntry'});
-        $result_itemName = DB::connection('world')->select($query_itemName);
-
-        $result[$i]->{'itemguid'} = $result_itemName[0]->{'name'};
-      }
-    }
+    $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,n.name,count,lastbid,startbid,buyoutprice,deposit,time
+    FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
+    LEFT JOIN ' . env('DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
+    LEFT JOIN ' . env('DB_WORLD') .'.item_template AS n ON ins.itemEntry = n.entry
+    LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
+    LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
   }
 
-  if (isset($_GET['time']))
+  for ($i = 0; $i < count($result); $i++)
   {
-    for ($i = 0; $i < count($result); $i++)
+    $result[$i]->{'buyname'} == null ? $result[$i]->{'buyname'} = "No bid" : '';
+    
+    $buyoutprice = $result[$i]->{'buyoutprice'};
+    $startbid    = $result[$i]->{'startbid'};
+    $lastbid     = $result[$i]->{'lastbid'};
+
+    if ($startbid > 9999)
     {
-      $datetime1 = new DateTime();
-      $datetime2 = new DateTime('@'.$result[$i]->{'time'});
-      $interval = $datetime1->diff($datetime2);
-      $timeleft = $interval->format('%a days %h hours %i minutes %S seconds');
+      $startbid = substr($startbid, 0, -4) . " gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
 
-      $empties = array('0 days ', '0 hours ', '0 minutes ', '0 seconds ');
-      $timeleft = str_replace($empties, '', $timeleft);
+      if ($buyoutprice == "0")
+        $buyoutprice = "";
+      else
+        $buyoutprice = substr($buyoutprice, 0, -4) . " gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
 
-      $result[$i]->{'time'} = $timeleft;
+      if ($lastbid != "0")
+        $lastbid = substr($lastbid, 0, -4) . " gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
     }
+    elseif ($startbid > 99)
+    {
+      $startbid    = "00 gold " . substr($startbid, -4, 2) . " silver " . substr($startbid, -2) . " copper";
+
+      if ($buyoutprice == "0")
+        $buyoutprice = "";
+      else
+        $buyoutprice = "00 gold " . substr($buyoutprice, -4, 2) . " silver " . substr($buyoutprice, -2) . " copper";
+
+      if ($lastbid != "0")
+        $lastbid     = "00 gold " . substr($lastbid, -4, 2) . " silver " . substr($lastbid, -2) . " copper";
+    }
+    else
+    {
+      $startbid    = "00 gold 00 silver " . substr($startbid, -2) . " copper";
+
+      if ($buyoutprice == "0")
+        $buyoutprice = "";
+      else
+        $buyoutprice = "00 gold 00 silver " . substr($buyoutprice, -2) . " copper";
+
+      if ($lastbid != "0")
+        $lastbid     = "00 gold 00 silver " . substr($lastbid, -2) . " copper";
+    }
+
+    $result[$i]->{'buyoutprice'} = $buyoutprice;
+    $result[$i]->{'startbid'}    = $startbid;
+    $result[$i]->{'lastbid'}     = $lastbid;
+
+
+    $datetime1 = new DateTime();
+    $datetime2 = new DateTime('@'.$result[$i]->{'time'});
+    $interval = $datetime1->diff($datetime2);
+    $timeleft = $interval->format('%a days %h hours %i minutes %S seconds');
+
+    $empties = array('0 days ', '0 hours ', '0 minutes ', '0 seconds ');
+    $timeleft = str_replace($empties, '', $timeleft);
+
+    $result[$i]->{'time'} = $timeleft;
   }
 
   return Response::json($result);
