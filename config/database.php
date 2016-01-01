@@ -92,9 +92,14 @@ return [
 			'prefix'    => '',
 			'strict'    => false,
 		],
-	'sqlite' => [
+	'sqlites' => [
 			'driver'   => 'sqlite',
 			'database' => storage_path().'/database/sqlite_database.db',
+			'prefix'   => '',
+		],
+	'itemdisplaydb' => [
+			'driver'   => 'sqlite',
+			'database' => storage_path().'/database/itemdisplay.db',
 			'prefix'   => '',
 		],
 

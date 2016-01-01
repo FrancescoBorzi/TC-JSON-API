@@ -1336,18 +1336,29 @@ Route::get('/auction', function() {
   }
   else
   {
-    $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,n.name,count,lastbid,startbid,buyoutprice,deposit,time
+    $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,n.name,n.displayid AS icon,count,lastbid,startbid,buyoutprice,deposit,time
     FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
     LEFT JOIN ' . env('DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
     LEFT JOIN ' . env('DB_WORLD') .'.item_template AS n ON ins.itemEntry = n.entry
     LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
     LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
   }
-
+  
   for ($i = 0; $i < count($result); $i++)
   {
+    
+    /* Get icon name */
+    $displayid = $result[$i]->{'icon'};
+
+    $tmp = DB::connection('itemdisplaydb')->select("SELECT icon FROM itemdisplay WHERE id = ?", [$displayid]);
+    $result[$i]->{'icon'} = $tmp[0]->{'icon'};
+    
+    
+    /* Get buyname if the bidder exists */
     $result[$i]->{'buyname'} == null ? $result[$i]->{'buyname'} = "No bid" : '';
     
+    
+    /* Convert money value to gold,copper,silver */
     $buyoutprice = $result[$i]->{'buyoutprice'};
     $startbid    = $result[$i]->{'startbid'};
     $lastbid     = $result[$i]->{'lastbid'};
@@ -1393,7 +1404,7 @@ Route::get('/auction', function() {
     $result[$i]->{'startbid'}    = $startbid;
     $result[$i]->{'lastbid'}     = $lastbid;
 
-
+    /* Converting timestamp in time dd hh mm  */
     $datetime1 = new DateTime();
     $datetime2 = new DateTime('@'.$result[$i]->{'time'});
     $interval = $datetime1->diff($datetime2);
