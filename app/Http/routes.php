@@ -868,6 +868,47 @@ Route::get('/item/enchantment/{id}', function($id) {
 })
   ->where('id', '[0-9]+');
 
+Route::get('/item/template/icon/{entries}', function($entries) {
+
+  // Check if multiple entries
+  if (strpos($entries, ",") > -1)
+  {
+    $items = DB::connection('world')->select("SELECT entry,displayid AS icon FROM item_template WHERE entry IN (" . $entries . ")");
+
+  if ($items == NULL)
+      return Response::json(array("error" => "please insert a valid item entry"));
+    
+    $ids = "";
+
+    for ($i = 0; $i < count($items)-1; $i++)
+      $ids .= $items[$i]->{'icon'}.",";
+
+    $ids .= $items[count($items)-1]->{'icon'};
+
+    $icons = DB::connection('itemdisplaydb')->select("SELECT ID AS displayid,icon FROM itemdisplay WHERE ID IN (".$ids.");");
+
+    for ($i = 0; $i < count($items); $i++)
+      for ($j = 0; $j < count($icons); $j++)
+        if ($items[$i]->{'icon'} == $icons[$j]->{'displayid'})
+          $items[$i]->{'icon'} = $icons[$j]->{'icon'};
+
+    $results = $items;
+  }
+  else
+  {
+    $displayid = DB::connection('world')->select("SELECT displayid FROM item_template WHERE entry = ?", [$entries]);
+
+    if ($displayid == NULL)
+      return Response::json(array("error" => "please insert a valid item entry"));
+
+    $displayid = $displayid[0]->{'displayid'};
+    $results = DB::connection('itemdisplaydb')->select("SELECT icon FROM itemdisplay WHERE ID = ?", [$displayid]);
+  }
+
+  return Response::json($results);
+})
+  ->where('entries', '[0-9-,]+');
+
 
 /* Quests */
 
@@ -1342,22 +1383,30 @@ Route::get('/auction', function() {
     LEFT JOIN ' . env('DB_WORLD') .'.item_template AS n ON ins.itemEntry = n.entry
     LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
     LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
+
+    /* Get icon name */
+    $ids = "";
+
+    for ($i = 0; $i < count($result)-1; $i++)
+      $ids .= $result[$i]->{'icon'}.",";
+
+    $ids .= $result[count($result)-1]->{'icon'};
+
+    $icons = DB::connection('itemdisplaydb')->select("SELECT ID AS displayid,icon FROM itemdisplay WHERE ID IN (".$ids.");");
+
+    for ($i = 0; $i < count($result); $i++)
+      for ($j = 0; $j < count($icons); $j++)
+        if ($result[$i]->{'icon'} == $icons[$j]->{'displayid'})
+          $result[$i]->{'icon'} = $icons[$j]->{'icon'};
   }
-  
+
+
   for ($i = 0; $i < count($result); $i++)
   {
-    
-    /* Get icon name */
-    $displayid = $result[$i]->{'icon'};
-
-    $tmp = DB::connection('itemdisplaydb')->select("SELECT icon FROM itemdisplay WHERE id = ?", [$displayid]);
-    $result[$i]->{'icon'} = $tmp[0]->{'icon'};
-    
-    
     /* Get buyname if the bidder exists */
     $result[$i]->{'buyname'} == null ? $result[$i]->{'buyname'} = "No bid" : '';
-    
-    
+
+
     /* Convert money value to gold,copper,silver */
     $buyoutprice = $result[$i]->{'buyoutprice'};
     $startbid    = $result[$i]->{'startbid'};
@@ -1417,7 +1466,8 @@ Route::get('/auction', function() {
   }
 
   return Response::json($result);
-});
+})
+  ->where('entries', '[0-9-,]+');;
 
 
 /* Top Honor */
