@@ -81,6 +81,7 @@ return [
       'prefix'    => '',
       'strict'    => false,
     ],
+
     'hotfixes' => [
       'driver'    => 'mysql',
       'host'      => env('DB_HOST', 'localhost'),
@@ -92,12 +93,18 @@ return [
       'prefix'    => '',
       'strict'    => false,
     ],
+
     'sqlite' => [
       'driver'   => 'sqlite',
       'database' => storage_path().'/database/sqlite_database.db',
       'prefix'   => '',
     ],
 
+    'itemdisplaydb' => [
+      'driver'   => 'sqlite',
+      'database' => storage_path().'/database/itemdisplay.db',
+      'prefix'   => '',
+    ],
   ],
 
   /*
