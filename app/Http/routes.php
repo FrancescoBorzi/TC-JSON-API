@@ -300,7 +300,7 @@ Route::get('/search/tickets', function() {
     if (isset($_GET['response']) && $_GET['response'] != "")
       $query->where('gm_ticket.response', 'LIKE', '%'. $_GET['response'] .'%');
 
-    $results = $query->select('gm_ticket.*', 'player.online', 'assign.name AS assignedToName')->orderBy('gm_ticket.id')->get();
+    $results = $query->select('gm_ticket.*', 'player.name AS playerFormerName', 'player.online', 'assign.name AS assignedToName')->orderBy('gm_ticket.id')->get();
   }
 
   return Response::json($results);
@@ -1714,10 +1714,11 @@ Route::get('ticket/recent/{count}', function($count) {
 
   $query = DB::connection('characters')->table('gm_ticket');
 
+  $query->leftJoin('characters AS player', 'player.guid', '=', 'gm_ticket.playerGuid');
   $query->leftJoin('characters AS resolv', 'resolv.guid', '=', 'gm_ticket.resolvedBy');
   $query->leftJoin('characters AS assign', 'assign.guid', '=', 'gm_ticket.assignedTo');
 
-  $results = $query->select('gm_ticket.*', 'resolv.name AS resolvedByName', 'assign.name AS assignedToName')->where('gm_ticket.closedBy', '!=', 0)->orWhere('gm_ticket.completed', '!=', 0)->orderBy('gm_ticket.id', 'desc')->take($count)->get();
+  $results = $query->select('gm_ticket.*', 'player.name AS playerFormerName', 'resolv.name AS resolvedByName', 'assign.name AS assignedToName')->where('gm_ticket.closedBy', '!=', 0)->orWhere('gm_ticket.completed', '!=', 0)->orderBy('gm_ticket.id', 'desc')->take($count)->get();
 
   return Response::json($results);
 });
