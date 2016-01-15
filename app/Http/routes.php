@@ -875,9 +875,9 @@ Route::get('/item/template/icon/{entries}', function($entries) {
   {
     $items = DB::connection('world')->select("SELECT entry,displayid AS icon FROM item_template WHERE entry IN (" . $entries . ")");
 
-  if ($items == NULL)
+    if ($items == NULL)
       return Response::json(array("error" => "please insert a valid item entry"));
-    
+
     $ids = "";
 
     for ($i = 0; $i < count($items)-1; $i++)
