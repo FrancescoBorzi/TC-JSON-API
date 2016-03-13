@@ -105,6 +105,12 @@ return [
       'database' => storage_path().'/database/itemdisplay.db',
       'prefix'   => '',
     ],
+
+    'achievement' => [
+      'driver'   => 'sqlite',
+      'database' => storage_path().'/database/achievement.db',
+      'prefix'   => '',
+    ],
   ],
 
   /*
