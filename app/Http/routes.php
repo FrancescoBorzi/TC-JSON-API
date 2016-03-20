@@ -1532,6 +1532,71 @@ Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
 })
   ->where('arenaTeamId', '[0-9]+');
 
+/* Achievements */
+
+Route::get('/achievement_category', function() {
+
+  if (isset($_GET['no_extra_fields']) && $_GET['no_extra_fields'] != "")
+    $result = DB::connection('achievement')->select("SELECT * FROM achievementcategory");
+  else
+    $result = DB::connection('achievement')->select("SELECT ID, ParentID, Name FROM achievementcategory");
+
+  return Response::json($result);
+});
+
+Route::get('/achievement_progress', function() {
+
+  if (isset($_GET['from']) && $_GET['from'] != "")
+    $from = $_GET['from'];
+  else
+    $from = 0;
+
+  if (isset($_GET['to']) && $_GET['to'] != "")
+    $to = $_GET['to'];
+  else
+    $to = 20;
+
+  if (isset($_GET['guid']) && $_GET['guid'] != "")
+  {
+    $result = DB::select('SELECT ac.guid, ac.criteria, ac.counter, ac.date, c.account, c.name, c.level, c.race, c.class, c.gender
+FROM ' . env('DB_CHARACTERS') . '.character_achievement_progress AS ac
+JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ac.guid = c.guid
+WHERE ac.guid = ' . $_GET['guid']);
+
+    $ids = "";
+    for ($i = 0; $i < count($result); $i++)
+      $ids .= $result[$i]->{'criteria'} . ",";
+
+    $ids = substr($ids, 0, strlen($ids)-1);
+
+    $ach = DB::connection('achievement')->select("SELECT acc.ID AS criteria, Achievement AS ID, aca.ID as CategoryID, aca.parentID, aca.Name as Category, aca2.Name as ParentCategory, ac.Name, ac.Description, acc.Description, Faction, Map, icon
+FROM achievementcriteria as acc
+JOIN achievement AS ac ON acc.Achievement = ac.ID
+JOIN achievementcategory AS aca ON ac.category = aca.ID
+JOIN achievementcategory AS aca2 ON aca.ParentID= aca2.ID
+WHERE acc.ID IN (" . $ids . ") LIMIT 50");
+
+    $result = $ach;
+  }
+  else
+  {
+
+    /* Underworking */    
+    /*
+$result = DB::select('SELECT ac.guid, ac.criteria, SUM(ac.counter) AS counter, ac.date, c.account, c.name, c.level, c.race, c.class, c.gender
+FROM ' . env('DB_CHARACTERS') . '.character_achievement_progress AS ac
+JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ac.guid = c.guid
+WHERE c.account NOT IN
+(SELECT id FROM ' . env('DB_AUTH') . '.account_access WHERE gmlevel > 0)
+LIMIT ' . $from . ' , ' . $to);
+*/
+
+  }
+
+  return Response::json($result);
+});
+
+
 
 /* Auth */
 
