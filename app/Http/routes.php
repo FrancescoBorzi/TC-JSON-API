@@ -1563,7 +1563,7 @@ Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
   (t1.guid = t4.guid AND t3.type =
     (CASE t4.slot
       WHEN 0 THEN 2
-      WHEN 1 THEN 3a
+      WHEN 1 THEN 3
       WHEN 2 THEN 5
     END)
   )
