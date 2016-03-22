@@ -2,6 +2,47 @@
 
 /* DBC */
 
+Route::get('/achievement', function() {
+
+  $query = DB::connection('achievement')->table('achievement');
+
+  if (!isset($_GET['no_extra_fields']))
+    $query->select('ID', 'Faction', 'Map', 'Name', 'Description', 'Category', 'Points', 'Flags', 'SpellIcon', 'icon');
+
+  if (isset($_GET['category']) && $_GET['category'] != "")
+    $query->where('category', '=', $_GET['category']);
+
+  if (isset($_GET['faction']) && $_GET['faction'] != "") {
+    if ($_GET['faction'] == "horde") {
+      $query->where('Faction', '!=', '1');
+    }
+
+    if ($_GET['faction'] == "alliance")
+      $query->where('Faction', '!=', '0');
+  }
+
+  $result = $query->get();
+
+  return Response::json($result);
+});
+
+Route::get('/achievement_category', function() {
+
+  $query = DB::connection('achievement')->table('achievementcategory');
+
+  if (isset($_GET['no_extra_fields']) && $_GET['no_extra_fields'] != "" && $_GET['no_extra_fields'] == 0)
+    $query->select('*');
+  else
+    $query->select('ID', 'ParentID', 'Name');
+
+  if (isset($_GET['id']) && $_GET['id'] != "")
+    $query->where('ID', '=', $_GET['id']);
+
+  $result = $query->get();
+
+  return Response::json($result);
+});
+
 Route::get('/dbc/achievements/{id}', function($id) {
 
   if (isset($_GET['version']) && $_GET['version'] == 6)
@@ -1522,7 +1563,7 @@ Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
   (t1.guid = t4.guid AND t3.type =
     (CASE t4.slot
       WHEN 0 THEN 2
-      WHEN 1 THEN 3
+      WHEN 1 THEN 3a
       WHEN 2 THEN 5
     END)
   )
@@ -1534,15 +1575,28 @@ Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
 
 /* Achievements */
 
-Route::get('/achievement_category', function() {
+Route::get('/character_achievement/{guid}', function($guid) {
 
-  if (isset($_GET['no_extra_fields']) && $_GET['no_extra_fields'] != "")
-    $result = DB::connection('achievement')->select("SELECT * FROM achievementcategory");
-  else
-    $result = DB::connection('achievement')->select("SELECT ID, ParentID, Name FROM achievementcategory");
+  $query = DB::connection('characters')->table('character_achievement');
+  $query->where('guid', '=', $guid);
 
-  return Response::json($result);
-});
+  $results = $query->get();
+
+  if (isset($_GET['category']) && $_GET['category'] != "") {
+    $results = $query->get();
+
+    $ids = "";
+    for ($i = 0; $i < count($results); $i++)
+      $ids .= $results[$i]->{'achievement'} . ",";
+
+    $ids = substr($ids, 0, strlen($ids)-1);
+
+    $results = DB::connection('achievement')->select("SELECT ID, Name, Description, Category, Points, icon FROM achievement WHERE ID IN (" . $ids . ") AND category = " . $_GET['category']);
+  }
+
+  return Response::json($results);
+})
+  ->where('guid', '[0-9]+');
 
 Route::get('/achievement_progress', function() {
 
