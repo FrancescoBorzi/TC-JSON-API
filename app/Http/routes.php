@@ -1,47 +1,23 @@
 <?php
 
+Route::group(["prefix" => "api/v1"], function() {
+    Route::group(["prefix" => "achievements"], function() {
+        Route::get("{id?}", "Achievements\AchievementsController@getAchievements")->where('id', '[0-9]+');
+        Route::get("categories/{id?}", "Achievements\AchievementsController@getAchievementCategories")
+            ->where('id', '[0-9]+');
+    });
+});
+
+
+/*
+ * backward compatibility
+ */
+Route::get('achievement/{id?}', "Achievements\AchievementsController@getAchievements")->where('id', '[0-9]+');
+Route::get('achievement_category/{id?}', "Achievements\AchievementsController@getAchievementCategories")
+    ->where('id', '[0-9]+');
+
+
 /* DBC */
-
-Route::get('/achievement', function() {
-
-    $query = DB::connection('achievement')->table('achievement');
-
-    if (!isset($_GET['no_extra_fields']))
-        $query->select('ID', 'Faction', 'Map', 'Name', 'Description', 'Category', 'Points', 'Flags', 'SpellIcon', 'icon');
-
-    if (isset($_GET['category']) && $_GET['category'] != "")
-        $query->where('category', '=', $_GET['category']);
-
-    if (isset($_GET['faction']) && $_GET['faction'] != "") {
-        if ($_GET['faction'] == "horde") {
-            $query->where('Faction', '!=', '1');
-        }
-
-        if ($_GET['faction'] == "alliance")
-            $query->where('Faction', '!=', '0');
-    }
-
-    $result = $query->get();
-
-    return Response::json($result);
-});
-
-Route::get('/achievement_category', function() {
-
-    $query = DB::connection('achievement')->table('achievementcategory');
-
-    if (isset($_GET['no_extra_fields']) && $_GET['no_extra_fields'] != "" && $_GET['no_extra_fields'] == 0)
-        $query->select('*');
-    else
-        $query->select('ID', 'ParentID', 'Name');
-
-    if (isset($_GET['id']) && $_GET['id'] != "")
-        $query->where('ID', '=', $_GET['id']);
-
-    $result = $query->get();
-
-    return Response::json($result);
-});
 
 Route::get('/dbc/achievements/{id}', function($id) {
 
@@ -298,7 +274,7 @@ Route::get('/search/tickets', function() {
     if (isset($_GET['version']) && $_GET['version'] == 6)
     {
         // TODO
-        return;
+        return [];
     }
     else
     {

@@ -61,6 +61,10 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 
 - Copy the file **.env.example** to **.env**
 
+- Automatic encryption key generation:
+
+`php artisan key:generate`
+
 ## 2) Configure the API
 
 - Open **.env** with a text editor and set properly DB_* parameters, example:
