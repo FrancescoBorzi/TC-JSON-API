@@ -3,7 +3,7 @@
 In order to install this API, your system must have:
 
 - **[TDB 335.59](https://github.com/TrinityCore/TrinityCore/releases/)** or newer
-- **PHP 5.4** or newer
+- **PHP 5.5.9** or newer
 - **Mcrypt PHP Extension**
 - **PHP Sqlite driver (php5-sqlite)**
 

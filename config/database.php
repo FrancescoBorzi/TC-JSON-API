@@ -2,7 +2,7 @@
 
 return [
 
-  /*
+    /*
 	|--------------------------------------------------------------------------
 	| PDO Fetch Style
 	|--------------------------------------------------------------------------
@@ -13,9 +13,9 @@ return [
 	|
 	*/
 
-  'fetch' => PDO::FETCH_CLASS,
+    'fetch' => PDO::FETCH_CLASS,
 
-  /*
+    /*
 	|--------------------------------------------------------------------------
 	| Default Database Connection Name
 	|--------------------------------------------------------------------------
@@ -26,9 +26,9 @@ return [
 	|
 	*/
 
-  'default' => 'world',
+    'default' => 'world',
 
-  /*
+    /*
 	|--------------------------------------------------------------------------
 	| Database Connections
 	|--------------------------------------------------------------------------
@@ -44,76 +44,76 @@ return [
 	|
 	*/
 
-  'connections' => [
+    'connections' => [
 
-    'world' => [
-      'driver'    => 'mysql',
-      'host'      => env('DB_HOST', 'localhost'),
-      'database'  => env('DB_WORLD', 'world'),
-      'username'  => env('DB_USERNAME', 'root'),
-      'password'  => env('DB_PASSWORD', 'password'),
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
-      'strict'    => false,
+        'world' => [
+            'driver'        => 'mysql',
+            'host'            => env('DB_HOST', 'localhost'),
+            'database'    => env('DB_WORLD', 'world'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', 'password'),
+            'charset'     => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+        ],
+
+        'characters' => [
+            'driver'        => 'mysql',
+            'host'            => env('DB_HOST', 'localhost'),
+            'database'    => env('DB_CHARACTERS', 'characters'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', 'password'),
+            'charset'     => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+        ],
+
+        'auth' => [
+            'driver'        => 'mysql',
+            'host'            => env('DB_HOST', 'localhost'),
+            'database'    => env('DB_AUTH', 'auth'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', 'password'),
+            'charset'     => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+        ],
+
+        'hotfixes' => [
+            'driver'        => 'mysql',
+            'host'            => env('DB_HOST', 'localhost'),
+            'database'    => env('DB_HOTFIXES', 'hotfixes'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', 'password'),
+            'charset'     => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+        ],
+
+        'sqlite' => [
+            'driver'     => 'sqlite',
+            'database' => storage_path().'/database/sqlite_database.db',
+            'prefix'     => '',
+        ],
+
+        'itemdisplaydb' => [
+            'driver'     => 'sqlite',
+            'database' => storage_path().'/database/itemdisplay.db',
+            'prefix'     => '',
+        ],
+
+        'achievement' => [
+            'driver'     => 'sqlite',
+            'database' => storage_path().'/database/achievement.db',
+            'prefix'     => '',
+        ],
     ],
 
-    'characters' => [
-      'driver'    => 'mysql',
-      'host'      => env('DB_HOST', 'localhost'),
-      'database'  => env('DB_CHARACTERS', 'characters'),
-      'username'  => env('DB_USERNAME', 'root'),
-      'password'  => env('DB_PASSWORD', 'password'),
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
-      'strict'    => false,
-    ],
-
-    'auth' => [
-      'driver'    => 'mysql',
-      'host'      => env('DB_HOST', 'localhost'),
-      'database'  => env('DB_AUTH', 'auth'),
-      'username'  => env('DB_USERNAME', 'root'),
-      'password'  => env('DB_PASSWORD', 'password'),
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
-      'strict'    => false,
-    ],
-
-    'hotfixes' => [
-      'driver'    => 'mysql',
-      'host'      => env('DB_HOST', 'localhost'),
-      'database'  => env('DB_HOTFIXES', 'hotfixes'),
-      'username'  => env('DB_USERNAME', 'root'),
-      'password'  => env('DB_PASSWORD', 'password'),
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
-      'strict'    => false,
-    ],
-
-    'sqlite' => [
-      'driver'   => 'sqlite',
-      'database' => storage_path().'/database/sqlite_database.db',
-      'prefix'   => '',
-    ],
-
-    'itemdisplaydb' => [
-      'driver'   => 'sqlite',
-      'database' => storage_path().'/database/itemdisplay.db',
-      'prefix'   => '',
-    ],
-
-    'achievement' => [
-      'driver'   => 'sqlite',
-      'database' => storage_path().'/database/achievement.db',
-      'prefix'   => '',
-    ],
-  ],
-
-  /*
+    /*
 	|--------------------------------------------------------------------------
 	| Migration Repository Table
 	|--------------------------------------------------------------------------
@@ -124,6 +124,6 @@ return [
 	|
 	*/
 
-  'migrations' => 'migrations',
+    'migrations' => 'migrations',
 
 ];
