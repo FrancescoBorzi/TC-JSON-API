@@ -1574,6 +1574,7 @@ Route::get('/character_achievement/{guid}', function($guid) {
 })
     ->where('guid', '[0-9]+');
 
+
 Route::get('/achievement_progress', function() {
 
     if (isset($_GET['from']) && $_GET['from'] != "")
@@ -1586,17 +1587,47 @@ Route::get('/achievement_progress', function() {
     else
         $to = 20;
 
-    if (isset($_GET['guid']) && $_GET['guid'] != "")
-    {
+    if (isset($_GET['guid']) && $_GET['guid'] != "" && isset($_GET['category']) && $_GET['category'] != "") {
+        $ach_category = DB::connection('achievement')->select("SELECT ach.ID AS ID, acc.ID AS criteria, ach.Name, ach.Description, ach.Points, ach.Category, ach.icon, acc.Quantity
+    FROM achievement AS ach
+    JOIN achievementcriteria AS acc ON ach.ID = acc.Achievement
+    WHERE ach.category=" . $_GET['category']);
+
+        /* take criteria values */
+        $ids = "";
+        for ($i = 0; $i < count($ach_category); $i++)
+            $ids .= $ach_category[$i]->{'criteria'} . ",";
+        $ids = substr($ids, 0, strlen($ids)-1);
+
+        $ach_progress = DB::connection('characters')->select("SELECT criteria, counter FROM character_achievement_progress WHERE guid=" . $_GET['guid'] . " AND criteria IN (" . $ids . ")");
+
+        $result = [];
+        $k = 0;
+
+        for ($i = 0; $i < count($ach_category); $i++) {
+            for ($j = 0; $j < count($ach_progress); $j++) {
+
+                if ($ach_category[$i]->{'criteria'} == $ach_progress[$j]->{'criteria'}) {
+                    $ach_category[$i]->{'counter'} = $ach_progress[$j]->{'counter'};
+
+                    $result[$k] = $ach_category[$i];
+                    $k++;
+                }
+
+            }
+        }
+
+    }
+    else if (isset($_GET['guid']) && $_GET['guid'] != "") {
         $result = DB::select('SELECT ac.guid, ac.criteria, ac.counter, ac.date, c.account, c.name, c.level, c.race, c.class, c.gender
 FROM ' . env('DB_CHARACTERS') . '.character_achievement_progress AS ac
 JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ac.guid = c.guid
 WHERE ac.guid = ' . $_GET['guid']);
 
+        /* take criteria values */
         $ids = "";
         for ($i = 0; $i < count($result); $i++)
             $ids .= $result[$i]->{'criteria'} . ",";
-
         $ids = substr($ids, 0, strlen($ids)-1);
 
         $ach = DB::connection('achievement')->select("SELECT acc.ID AS criteria, Achievement AS ID, aca.ID as CategoryID, aca.parentID, aca.Name as Category, aca2.Name as ParentCategory, ac.Name, ac.Description, acc.Description, Faction, Map, icon
@@ -1608,25 +1639,27 @@ WHERE acc.ID IN (" . $ids . ") LIMIT 50");
 
         $result = $ach;
     }
-    else
-    {
+    else {
 
-        /* Underworking */        
+        /* Underworking */
         /*
-$result = DB::select('SELECT ac.guid, ac.criteria, SUM(ac.counter) AS counter, ac.date, c.account, c.name, c.level, c.race, c.class, c.gender
+    $result = DB::select('SELECT ac.guid, ac.criteria, SUM(ac.counter) AS counter, ac.date, c.account, c.name, c.level, c.race, c.class, c.gender
+    FROM ' . env('DB_CHARACTERS') . '.character_achievement_progress AS ac
+    JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ac.guid = c.guid
+    WHERE c.account NOT IN
+    (SELECT id FROM ' . env('DB_AUTH') . '.account_access WHERE gmlevel > 0)
+    LIMIT ' . $from . ' , ' . $to);
+    */
+
+        $result = DB::select('SELECT ac.guid, ac.criteria, SUM(ac.counter) AS counter, ac.date, c.account, c.name, c.level, c.race, c.class, c.gender
 FROM ' . env('DB_CHARACTERS') . '.character_achievement_progress AS ac
 JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ac.guid = c.guid
-WHERE c.account NOT IN
-(SELECT id FROM ' . env('DB_AUTH') . '.account_access WHERE gmlevel > 0)
-LIMIT ' . $from . ' , ' . $to);
-*/
+GROUP BY (guid)');
 
     }
 
     return Response::json($result);
 });
-
-
 
 /* Auth */
 
