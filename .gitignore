@@ -1,4 +1,9 @@
+.idea
 /vendor
 /node_modules
 .env
 .DS_Store
+composer.lock
+/public/storage
+Homestead.yaml
+Homestead.json

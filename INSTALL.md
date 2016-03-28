@@ -3,7 +3,7 @@
 In order to install this API, your system must have:
 
 - **[TDB 335.59](https://github.com/TrinityCore/TrinityCore/releases/)** or newer
-- **PHP 5.4** or newer
+- **PHP 5.5.9** or newer
 - **Mcrypt PHP Extension**
 - **PHP Sqlite driver (php5-sqlite)**
 
@@ -60,6 +60,10 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 `composer install`
 
 - Copy the file **.env.example** to **.env**
+
+- Automatic encryption key generation:
+
+`php artisan key:generate`
 
 ## 2) Configure the API
 
