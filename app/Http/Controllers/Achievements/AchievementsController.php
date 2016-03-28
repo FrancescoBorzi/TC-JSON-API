@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AvengerWeb
- * Date: 25.03.16
- * Time: 22:37
- */
 namespace App\Http\Controllers\Achievements;
 
 use App\Models\Achievements\Achievement;

@@ -1574,7 +1574,6 @@ Route::get('/character_achievement/{guid}', function($guid) {
 })
     ->where('guid', '[0-9]+');
 
-
 Route::get('/achievement_progress', function() {
 
     if (isset($_GET['from']) && $_GET['from'] != "")
