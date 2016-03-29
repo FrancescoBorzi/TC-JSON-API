@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,6 +22,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        UnsupportedVersion::class
     ];
 
     /**
@@ -45,6 +47,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        switch ($e) {
+            case ($e instanceof UnsupportedVersion): {
+                return new Response($e->getMessage(), $e->getCode());
+            }
+            default:
+                return parent::render($request, $e);
+        }
     }
 }
