@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\TCAPI;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('App\Helpers\TCAPI', function($app)
+        {
+            return new TCAPI();
+        });
     }
 }

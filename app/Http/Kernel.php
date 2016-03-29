@@ -14,8 +14,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \App\Http\Middleware\CheckVersion::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \App\Http\Middleware\CORSAccess::class
+        \App\Http\Middleware\CORSAccess::class,
     ];
 
     /**
@@ -34,7 +35,9 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            \App\Http\Middleware\CheckVersion::class,
+            \App\Http\Middleware\CORSAccess::class,
+            'throttle:60,1'
         ],
     ];
 

@@ -1,10 +1,16 @@
 <?php
 
-Route::group(["prefix" => "api/v1"], function() {
+Route::group(["prefix" => "api/v1", "middleware" => "api"], function() {
     Route::group(["prefix" => "achievements"], function() {
         Route::get("{id?}", "Achievements\AchievementsController@getAchievements")->where('id', '[0-9]+');
         Route::get("categories/{id?}", "Achievements\AchievementsController@getAchievementCategories")
             ->where('id', '[0-9]+');
+    });
+
+    Route::group(["prefix" => "dbc"], function() {
+        Route::group(["prefix" => "achievements"], function() {
+            Route::get('{id?}', "Achievements\AchievementsController@getDbcAchievements")->where('id', '[0-9]+');
+        });
     });
 });
 
@@ -19,20 +25,10 @@ Route::get('achievement_category/{id?}', "Achievements\AchievementsController@ge
 
 /* DBC */
 
-Route::get('/dbc/achievements/{id}', function($id) {
-
-    if (isset($_GET['version']) && $_GET['version'] == 6)
-        $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wod WHERE id = ?", [$id]);
-    else
-        $results = DB::connection('sqlite')->select("SELECT * FROM achievements_wotlk WHERE id = ?", [$id]);
-
-    return Response::json($results);
-})
-    ->where('id', '[0-9]+');
+Route::get('/dbc/achievements/{id?}', "Achievements\AchievementsController@getDbcAchievements")->where('id', '[0-9]+');
 
 Route::get('/dbc/areas_and_zones/{id}', function($id) {
-
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wod WHERE m_ID = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wotlk WHERE m_ID = ?", [$id]);
@@ -43,7 +39,7 @@ Route::get('/dbc/areas_and_zones/{id}', function($id) {
 
 Route::get('/dbc/areatriggers/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wod WHERE m_id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wotlk WHERE m_id = ?", [$id]);
@@ -54,7 +50,7 @@ Route::get('/dbc/areatriggers/{id}', function($id) {
 
 Route::get('/dbc/emotes/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wod WHERE id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM emotes_wotlk WHERE id = ?", [$id]);
@@ -65,7 +61,7 @@ Route::get('/dbc/emotes/{id}', function($id) {
 
 Route::get('/dbc/factions/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM factions_wod WHERE m_ID = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM factions_wotlk WHERE m_ID = ?", [$id]);
@@ -76,7 +72,7 @@ Route::get('/dbc/factions/{id}', function($id) {
 
 Route::get('/dbc/languages/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM languages_wod WHERE id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM languages_wotlk WHERE id = ?", [$id]);
@@ -87,7 +83,7 @@ Route::get('/dbc/languages/{id}', function($id) {
 
 Route::get('/dbc/maps/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         // TODO add maps_wod
         $results = DB::connection('sqlite')->select("SELECT * FROM maps_wotlk WHERE m_ID = ?", [$id]);
     else
@@ -99,7 +95,7 @@ Route::get('/dbc/maps/{id}', function($id) {
 
 Route::get('/dbc/player_titles/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wod WHERE id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM player_titles_wotlk WHERE id = ?", [$id]);
@@ -110,7 +106,7 @@ Route::get('/dbc/player_titles/{id}', function($id) {
 
 Route::get('/dbc/skills/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM skills_wod WHERE id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM skills_wotlk WHERE id = ?", [$id]);
@@ -121,7 +117,7 @@ Route::get('/dbc/skills/{id}', function($id) {
 
 Route::get('/dbc/sound_entries/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wod WHERE id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM sound_entries_wotlk WHERE id = ?", [$id]);
@@ -132,7 +128,7 @@ Route::get('/dbc/sound_entries/{id}', function($id) {
 
 Route::get('/dbc/spells/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         // TODO add spells_wod
         $results = DB::connection('sqlite')->select("SELECT * FROM spells_wotlk WHERE ID = ?", [$id]);
     else
@@ -144,7 +140,7 @@ Route::get('/dbc/spells/{id}', function($id) {
 
 Route::get('/dbc/taxi_nodes/{id}', function($id) {
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wod WHERE id = ?", [$id]);
     else
         $results = DB::connection('sqlite')->select("SELECT * FROM taxi_nodes_wotlk WHERE id = ?", [$id]);
@@ -200,7 +196,7 @@ Route::get('/search/item', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
     {
         $query = DB::connection('hotfixes')->table('item_sparse')->select('ID', 'Name');
 
@@ -271,7 +267,7 @@ Route::get('/search/tickets', function() {
 
     $query = DB::connection('characters')->table('gm_ticket');
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
     {
         // TODO
         return [];
@@ -371,7 +367,7 @@ Route::get('/search/dbc/achievements', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('achievements_wod')->select('id', 'name');
     else
         $query = DB::connection('sqlite')->table('achievements_wotlk')->select('id', 'name');
@@ -392,7 +388,7 @@ Route::get('/search/dbc/emotes', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('emotes_wod')->select('id', 'emote');
     else
         $query = DB::connection('sqlite')->table('emotes_wotlk')->select('id', 'emote');
@@ -413,7 +409,7 @@ Route::get('/search/dbc/factions', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('factions_wod')->select('m_ID', 'm_name_lang_1');
     else
         $query = DB::connection('sqlite')->table('factions_wotlk')->select('m_ID', 'm_name_lang_1');
@@ -434,7 +430,7 @@ Route::get('/search/dbc/languages', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('languages_wod')->select('id', 'name');
     else
         $query = DB::connection('sqlite')->table('languages_wotlk')->select('id', 'name');
@@ -455,7 +451,7 @@ Route::get('/search/dbc/player_titles', function() {
     if ( !isset($_GET['id']) && !isset($_GET['title']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('player_titles_wod')->select('id', 'title');
     else
         $query = DB::connection('sqlite')->table('player_titles_wotlk')->select('id', 'title');
@@ -495,7 +491,7 @@ Route::get('/search/dbc/taxi_nodes', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('taxi_nodes_wod')->select('id', 'taxiName');
     else
         $query = DB::connection('sqlite')->table('taxi_nodes_wotlk')->select('id', 'taxiName');
@@ -516,7 +512,7 @@ Route::get('/search/dbc/maps', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('maps_wod')->select('m_ID', 'm_MapName_lang1');
     else
         $query = DB::connection('sqlite')->table('maps_wotlk')->select('m_ID', 'm_MapName_lang1');
@@ -537,7 +533,7 @@ Route::get('/search/dbc/skills', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('skills_wod')->select('id', 'name');
     else
         $query = DB::connection('sqlite')->table('skills_wotlk')->select('id', 'name');
@@ -558,7 +554,7 @@ Route::get('/search/dbc/spells', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('spells_wod')->select('ID', 'spellName');
     else
         $query = DB::connection('sqlite')->table('spells_wotlk')->select('ID', 'spellName');
@@ -579,7 +575,7 @@ Route::get('/search/dbc/areas_and_zones', function() {
     if ( !isset($_GET['id']) && !isset($_GET['name']) )
         return Response::json(array("error" => "please insert at least one parameter"));
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $query = DB::connection('sqlite')->table('areas_and_zones_wod')->select('m_ID', 'm_AreaName_lang');
     else
         $query = DB::connection('sqlite')->table('areas_and_zones_wotlk')->select('m_ID', 'm_AreaName_lang');
@@ -1009,7 +1005,7 @@ Route::get('/quest/request_items/{id}', function($id) {
 /* Vendors */
 
 Route::get('/vendor/creature/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM npc_vendor WHERE entry = ?", [$id]);
     else
         $results = DB::connection('world')->select("SELECT t1.entry, t1.slot, t1.item, t2.name, t1.maxcount, t1.incrtime, t1.ExtendedCost, t1.VerifiedBuild FROM npc_vendor AS t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?", [$id]);
@@ -1059,7 +1055,7 @@ Route::get('/npc_trainer/spell/{id}', function($id) {
 /* Loot templates */
 
 Route::get('/loot/creature/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM creature_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM creature_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1069,7 +1065,7 @@ Route::get('/loot/creature/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/reference/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM reference_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM reference_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1079,7 +1075,7 @@ Route::get('/loot/reference/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/gameobject/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM gameobject_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM gameobject_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1089,7 +1085,7 @@ Route::get('/loot/gameobject/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/item/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM item_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1099,7 +1095,7 @@ Route::get('/loot/item/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/fishing/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM fishing_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM fishing_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1109,7 +1105,7 @@ Route::get('/loot/fishing/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/disenchant/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM disenchant_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1119,7 +1115,7 @@ Route::get('/loot/disenchant/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/prospecting/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM prospecting_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM prospecting_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1129,7 +1125,7 @@ Route::get('/loot/prospecting/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/milling/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM milling_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM milling_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1139,7 +1135,7 @@ Route::get('/loot/milling/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/pickpocketing/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM pickpocketing_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM pickpocketing_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1149,7 +1145,7 @@ Route::get('/loot/pickpocketing/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/skinning/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM skinning_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM skinning_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1159,7 +1155,7 @@ Route::get('/loot/skinning/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/spell/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM spell_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t1.Item, t2.name, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM spell_loot_template as t1 LEFT JOIN item_template AS t2 ON t1.item = t2.entry WHERE t1.entry = ?', [$id]);
@@ -1191,7 +1187,7 @@ Route::get('/loot/gameobject/item/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/item/item/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM item_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM item_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
@@ -1208,7 +1204,7 @@ Route::get('/loot/fishing/item/{id}', function($id) {
     ->where('id', '[0-9]+');
 
 Route::get('/loot/disenchant/item/{id}', function($id) {
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
         $results = DB::connection('world')->select("SELECT * FROM disenchant_loot_template WHERE Entry = ?", [$id]);
     else
         $results = DB::connection('world')->select('SELECT t1.Entry, t2.name, t1.Item, t1.Reference, t1.Chance, t1.QuestRequired, t1.LootMode, t1.GroupId, t1.MinCount, t1.MaxCount FROM disenchant_loot_template AS t1 LEFT JOIN item_template as t2 ON t1.Entry = t2.entry WHERE item = ?', [$id]);
@@ -1384,7 +1380,7 @@ Route::get('/auction', function() {
     else
         $numItem = 100;
 
-    if (isset($_GET['version']) && $_GET['version'] == 6)
+    if (\App\Helpers\TCAPI::is("wod"))
     {
         $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,count,lastbid,startbid,buyoutprice,deposit,time
         FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
