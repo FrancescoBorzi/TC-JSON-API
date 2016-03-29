@@ -46,3 +46,4 @@ class CheckVersion
         return $next($request);
     }
 }
+
