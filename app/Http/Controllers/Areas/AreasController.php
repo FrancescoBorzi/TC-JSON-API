@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Areas;
 
 use App\Models\DBC\Area\AreasAndZones as AreasAndZonesWotlk;
 use App\Models\WOD\DBC\Area\AreasAndZones as AreasAndZonesWod;
+use App\Models\DBC\Area\AreaTrigger as AreaTriggerWotlk;
+use App\Models\WOD\DBC\Area\AreaTrigger as AreaTriggerWod;
 use App\Exceptions\UnsupportedVersion;
 use App\Helpers\TCAPI;
 use Illuminate\Http\Request;
@@ -54,6 +56,31 @@ class AreasController extends Controller
                 throw new UnsupportedVersion();
         }
         
+        return $result;
+    }
+
+    public function getAreaTrigger(Request $request, $id = 0) {
+        switch ($this->api->getGameVersion()) {
+            case "wod": {
+                if ($id)
+                    $result = AreaTriggerWod::findOrFail($id);
+                else
+                    $result = AreaTriggerWod::all();
+
+                break;
+            }
+            case "wotlk": {
+                if ($id)
+                    $result = AreaTriggerWotlk::findOrFail($id);
+                else
+                    $result = AreaTriggerWotlk::all();
+
+                break;
+            }
+            default:
+                throw new UnsupportedVersion();
+        }
+
         return $result;
     }
 
