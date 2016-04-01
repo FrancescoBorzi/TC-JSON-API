@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Achievements;
 use App\Exceptions\UnsupportedVersion;
 use App\Helpers\TCAPI;
 use App\Models\Achievements\Achievement;
+use App\Models\WOD\DBC\Achievements\Achievement as AchievementWod;
+use App\Models\DBC\Achievements\Achievement as AchievementWotlk;
 use App\Models\Achievements\AchievementCategory;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class AchievementsController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return Achievement|array|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|static[]
+     * @return Achievement|array
      */
     public function getAchievements(Request $request, $id = 0) {
 
@@ -94,17 +96,17 @@ class AchievementsController extends Controller
         switch ($this->api->getGameVersion()) {
             case "wod": {
                 if ($id)
-                    $result = \App\Models\WOD\DBC\Achievements\Achievement::findOrFail($id);
+                    $result = AchievementWod::findOrFail($id);
                 else
-                    $result = \App\Models\WOD\DBC\Achievements\Achievement::all();
+                    $result = AchievementWod::all();
 
                 break;
             }
             case "wotlk": {
                 if ($id)
-                    $result = \App\Models\DBC\Achievements\Achievement::findOrFail($id);
+                    $result = AchievementWotlk::findOrFail($id);
                 else
-                    $result = \App\Models\DBC\Achievements\Achievement::all();
+                    $result = AchievementWotlk::all();
 
                 break;
             }
