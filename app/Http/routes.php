@@ -11,6 +11,10 @@ Route::group(["prefix" => "api/v1", "middleware" => "api"], function() {
         Route::group(["prefix" => "achievements"], function() {
             Route::get('{id?}', "Achievements\AchievementsController@getDbcAchievements")->where('id', '[0-9]+');
         });
+        Route::group(["prefix" => "areas"], function() {
+            Route::get('{id?}', "Areas\AreasController@getAreaOrZone")->where('id', '[0-9]+');
+            Route::get("triggers/{id?}", "Areas\AreasController@getAreaTrigger")->where('id', '[0-9]+');
+        });
     });
 });
 
@@ -26,27 +30,8 @@ Route::get('achievement_category/{id?}', "Achievements\AchievementsController@ge
 /* DBC */
 
 Route::get('/dbc/achievements/{id?}', "Achievements\AchievementsController@getDbcAchievements")->where('id', '[0-9]+');
-
-Route::get('/dbc/areas_and_zones/{id}', function($id) {
-    if (\App\Helpers\TCAPI::is("wod"))
-        $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wod WHERE m_ID = ?", [$id]);
-    else
-        $results = DB::connection('sqlite')->select("SELECT * FROM areas_and_zones_wotlk WHERE m_ID = ?", [$id]);
-
-    return Response::json($results);
-})
-    ->where('id', '[0-9]+');
-
-Route::get('/dbc/areatriggers/{id}', function($id) {
-
-    if (\App\Helpers\TCAPI::is("wod"))
-        $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wod WHERE m_id = ?", [$id]);
-    else
-        $results = DB::connection('sqlite')->select("SELECT * FROM areatriggers_wotlk WHERE m_id = ?", [$id]);
-
-    return Response::json($results);
-})
-    ->where('id', '[0-9]+');
+Route::get('/dbc/areas_and_zones/{id?}', "Areas\AreasController@getAreaOrZone")->where('id', '[0-9]+');
+Route::get('/dbc/areatriggers/{id?}', "Areas\AreasController@getAreaTrigger")->where('id', '[0-9]+');
 
 Route::get('/dbc/emotes/{id}', function($id) {
 
