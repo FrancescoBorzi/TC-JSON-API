@@ -22,7 +22,7 @@ You may also need:
 
 To install mcrypt from command line need to run:
 
-`sudo apt-get install php5-mcrypt`
+`sudo apt-get install php-mcrypt`
 
 On Ubuntu when you run sudo apt-get install php5-mcrypt it doesn't actually install the extension into the mods-available. You'll need to symlink it with the follow command:
 
