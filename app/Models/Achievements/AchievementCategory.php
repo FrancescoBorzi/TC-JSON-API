@@ -52,8 +52,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AchievementCategory extends Model
 {
-    protected $table = "achievementcategory";
-    protected $connection = "achievement";
+    protected $table = "achievementCategory";
+    protected $connection = "dbc";
 
     /**
      * Returning extra fields

@@ -18,11 +18,11 @@ You may also need:
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 
-### Installing mcrypt on Ubuntu
+### Installing mcrypt on Ubuntu 14.04
 
 To install mcrypt from command line need to run:
 
-`sudo apt-get install php-mcrypt`
+`sudo apt-get install php5-mcrypt`
 
 On Ubuntu when you run sudo apt-get install php5-mcrypt it doesn't actually install the extension into the mods-available. You'll need to symlink it with the follow command:
 
@@ -32,6 +32,19 @@ On Ubuntu when you run sudo apt-get install php5-mcrypt it doesn't actually inst
 Well, now you must enable the mod with:
 
 `sudo php5enmod mcrypt`
+
+`sudo service apache2 restart`
+
+### Installing requirements on Ubuntu 16.04
+
+To install the requirements you can type the following command on the terminal:
+
+`sudo apt install php-mcrypt php-xml php-mbstring php-sqlite3`
+
+Well, now you must enable the mod mcrypt with:
+
+`sudo phpenmod mcrypt`
+
 `sudo service apache2 restart`
 
 
@@ -67,6 +80,8 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 
 ## 2) Configure the API
 
+- Create a new database that will contain all **dbc** data and import the file achievements.sql (in storage/database/achievements.sql) which contains all the dbc data of achievements.
+
 - Open **.env** with a text editor and set properly DB_* parameters, example:
 
 `DB_HOST=localhost`
@@ -76,6 +91,8 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 `DB_CHARACTERS=characters`
 
 `DB_AUTH=auth`
+
+`DB_DBC=dbc`
 
 `DB_USERNAME=root`
 

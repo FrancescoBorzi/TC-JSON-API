@@ -139,7 +139,7 @@ use Illuminate\Database\Eloquent\Model;
 class Achievement extends Model
 {
     protected $table = "achievement";
-    protected $connection = "achievement";
+    protected $connection = "dbc";
 
     /**
      * Returning extra fields

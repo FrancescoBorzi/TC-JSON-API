@@ -94,6 +94,18 @@ return [
             'strict'        => false,
         ],
 
+        'dbc' => [
+            'driver'        => 'mysql',
+            'host'            => env('DB_HOST', 'localhost'),
+            'database'    => env('DB_DBC', 'dbc'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', 'password'),
+            'charset'     => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+        ],
+
         'sqlite' => [
             'driver'     => 'sqlite',
             'database' => storage_path().'/database/sqlite_database.db',
@@ -103,12 +115,6 @@ return [
         'itemdisplaydb' => [
             'driver'     => 'sqlite',
             'database' => storage_path().'/database/itemdisplay.db',
-            'prefix'     => '',
-        ],
-
-        'achievement' => [
-            'driver'     => 'sqlite',
-            'database' => storage_path().'/database/achievement.db',
             'prefix'     => '',
         ],
     ],
