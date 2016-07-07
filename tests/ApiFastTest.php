@@ -3,15 +3,7 @@
 class ApiFastTest extends TestCase
 {
     protected $baseUrl = '';
-
-    /**
-     * ApiFastTest constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
+    
     /**
      * A basic functional test example.
      *
