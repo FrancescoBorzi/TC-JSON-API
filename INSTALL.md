@@ -99,7 +99,7 @@ Now you can see error messages in your browser & logs too.
 
 ## Developing environment
 
-You really doesn't need install apache or nginx on your local PC for developing, that easily to use integrated web server.
+You really don't need install apache or nginx on your local PC for developing, that easily to use integrated web server.
 Go to root project directory and run CLI command:
 `php artisan serve`
 
