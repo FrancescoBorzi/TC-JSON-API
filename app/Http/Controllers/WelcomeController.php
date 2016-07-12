@@ -1,5 +1,8 @@
-<?php namespace App\Http\Controllers;
-use DB;
+<?php 
+namespace App\Http\Controllers;
+
+use App\Helpers\TCAPI;
+use App\Models\World\Version;
 
 class WelcomeController extends Controller {
 
@@ -14,28 +17,29 @@ class WelcomeController extends Controller {
 	|
 	*/
 
+    private $tcapi = null;
+
     /**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-    public function __construct()
+     * Create a new controller instance.
+     * @param TCAPI $api
+     */
+    public function __construct(TCAPI $api)
     {
         $this->middleware('guest');
+        $this->tcapi = $api;
     }
 
     /**
 	 * Show the application welcome screen to the user.
 	 *
-	 * @return Response
+	 * @return \Response
 	 */
     public function index()
     {
-        $world = DB::connection("world")->select('SELECT * FROM version');
+        $tdbInfo = Version::first();
+        $apiVersion = $this->tcapi->getApiVersion();
 
-        $version = json_decode(json_encode($world[0]), true);
-
-        return view('welcome', $version);
+        return view('welcome', compact('tdbInfo', 'apiVersion'));
     }
 
 }
