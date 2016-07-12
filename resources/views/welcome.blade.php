@@ -1,72 +1,15 @@
 <html>
     <head>
         <title>TC-JSON-API</title>
-
         <link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
-
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-                color: #B0BEC5;
-                display: table;
-                font-weight: 500;
-
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-                margin-bottom: 40px;
-                font-family: 'Lato';
-            }
-
-            .item {
-                font-size: 24px;
-                font-weight: 400;
-                margin: 10px;
-            }
-
-            .item strong {
-                font-weight: 900;
-            }
-
-            .credit {
-                font-weight: 700;
-                position: absolute;
-                bottom: 30px;
-                left: 45%;
-                font-family: 'Lato';
-            }
-
-            .credit a {
-                text-decoration: none;
-                color: grey;
-            }
-
-            .credit strong {
-                font-weight: 900;
-            }
-        </style>
+        <link href='{{ asset("css/app.css") }}' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <div class="container">
             <div class="content text-center">
                 <div class="title">TrinityCore-JSON-API</div>
-                <div class="item">API version: <strong>0.7</strong></div>
-                <div class="item">Database version: <strong><?= $db_version ?></strong></div>
+                <div class="item">API version: <strong>{{ $apiVersion }}</strong></div>
+                <div class="item">Database version: <strong>{{ $tdbInfo->db_version }}</strong></div>
                 <!-- We worked for free to build this software, please do not remove the credit! -->
                 <div class="credit">Created by <a target="_blank" href="https://github.com/ShinDarth"><strong>ShinDarth</strong></a> && <a target="_blank" href="https://github.com/Helias"><strong>Helias</strong></a></div>
             </div>

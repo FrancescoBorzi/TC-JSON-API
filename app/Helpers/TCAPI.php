@@ -19,7 +19,7 @@ class TCAPI
     /**
      * @var string
      */
-    private $apiVersion = "0.0.0";
+    private $apiVersion = "0.8.0";
 
     /**
      * @return string
@@ -45,5 +45,15 @@ class TCAPI
      */
     public static function is($version) {
         return hash_equals(app("App\Helpers\TCAPI")->getGameVersion(), $version);
+    }
+
+    /**
+     * Get last api version
+     *
+     * @return string
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
     }
 }

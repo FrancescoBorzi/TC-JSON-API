@@ -20,6 +20,10 @@ Route::group(["prefix" => "api/v1", "middleware" => "api"], function() {
     });
 });
 
+/* Other */
+
+Route::get('/version', "World\VersionController@index");
+Route::get('/api', 'World\VersionController@getApiVersion');
 
 /*
  * backward compatibility
@@ -38,6 +42,7 @@ Route::group(['prefix' => 'dbc'], function() {
 
     Route::resource("emotes", 'DBC\EmotesController');
 });
+
 
 Route::get('/dbc/factions/{id}', function($id) {
 
@@ -1801,16 +1806,6 @@ Route::get('/search/guid/', function() {
 
 
 /* Other */
-
-Route::get('/version', function() {
-    $results = DB::connection('world')->select('SELECT * FROM version');
-
-    return Response::json($results);
-});
-
-Route::get('/api', function() {
-    return Response::json(array("api_version" => "0.7", "api_branch" => "master"));
-});
 
 Route::get('topgm/ticket/account', function() {
     $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t3.username ORDER BY count DESC;');
