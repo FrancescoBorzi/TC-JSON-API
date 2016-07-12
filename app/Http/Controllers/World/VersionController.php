@@ -10,11 +10,11 @@ use App\Models\World\Version;
 use Symfony\Component\Process\Process;
 
 /**
- * Class EmotesController
+ * Class VersionController
  *
- * Managing emotes
+ * Showing version of api and trinity core database
  *
- * @package App\Http\Controllers\DBC
+ * @package App\Http\Controllers\World
  */
 class VersionController extends Controller
 {
