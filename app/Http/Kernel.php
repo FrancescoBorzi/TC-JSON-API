@@ -17,6 +17,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\CheckVersion::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \App\Http\Middleware\CORSAccess::class,
+        \App\Http\Middleware\AuthByToken::class
     ];
 
     /**

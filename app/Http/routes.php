@@ -18,6 +18,15 @@ Route::group(["prefix" => "api/v1", "middleware" => "api"], function() {
 
         Route::resource("emotes", 'DBC\EmotesController');
     });
+
+    Route::group(["prefix" => "auth"], function() {
+        Route::any("login", "Auth\AuthController@login");
+        Route::any("register", "Auth\AuthController@register");
+    });
+    
+    Route::group(["prefix" => "account", "middleware" => "auth"], function () {
+        Route::get("/", "Auth\AccountsController@index");
+    });
 });
 
 /* Other */
