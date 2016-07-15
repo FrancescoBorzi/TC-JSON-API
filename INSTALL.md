@@ -53,6 +53,14 @@ if you don't have [git](http://git-scm.com/) installed, you can [download it dir
 
 `php artisan key:generate`
 
+- Generate key for auth:
+
+`php artisan jwt:generate`
+
+- DB structure for auth:
+
+`php artisan migrate`
+
 ## 2) Configure the API
 
 - Create a new database that will contain all **dbc** data and import the file achievements.sql (in storage/database/achievements.sql) which contains all the dbc data of achievements.
