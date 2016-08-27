@@ -24,6 +24,10 @@ We need your help to reach our goal in building a valid API for TrinityCore. If 
 
 If you don't want to code, you can simply help us by telling us your suggestion about this API or by reporting any bugs, in these cases please fill an issue [here](https://github.com/ShinDarth/TC-JSON-API/issues).
 
+or you can donate to support us
+
+[![Donate](https://www.paypal.com/en_GB/i/btn/btn_donateCC_LG.gif "Donate")](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=52AZFFD86N39Q)
+
 
 ### License
 
