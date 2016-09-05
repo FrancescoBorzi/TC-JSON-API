@@ -640,13 +640,6 @@ Route::get('/creature/equip_template/{id}', function($id) {
 })
     ->where('id', '[0-9]+');
 
-Route::get('/creature/template/name/{id}', function($id) {
-    $results = DB::connection('world')->select("SELECT entry, name FROM creature_template WHERE entry = ?", [$id]);
-
-    return Response::json($results);
-})
-    ->where('id', '[0-9]+');
-
 Route::get('/creature/template_addon/{id}', function($id) {
     $results = DB::connection('world')->select("SELECT * FROM creature_template_addon WHERE entry = ?", [$id]);
 
