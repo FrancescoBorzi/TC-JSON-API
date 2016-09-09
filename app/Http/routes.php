@@ -1319,11 +1319,24 @@ Route::get('/loot/template/spell/{id}', function($id) {
 /* Characters */
 
 Route::get('/battleground/deserters/recent/{count}', function($count) {
-    $results = DB::connection('characters')->select('SELECT t1.guid, t2.name, t2.level, t1.type, t1.datetime FROM battleground_deserters AS t1 INNER JOIN characters AS t2 ON t1.guid = t2.guid ORDER BY datetime DESC LIMIT 0,?', [$count]);
+ $from = 0;
+ $where = "";
 
-    return Response::json($results);
+  if (isset($_GET['from']) && $_GET['from'] != "")
+    $from = $_GET['from'];
+    
+  if (isset($_GET['name']) && $_GET['name'] != "")
+    $where = "WHERE name LIKE '%" . $_GET['name'] . "%'";
+
+  $results = DB::connection('characters')->select('SELECT t1.guid, t2.name, t2.level, t1.type, t1.datetime
+  FROM battleground_deserters AS t1
+  INNER JOIN characters AS t2 ON t1.guid = t2.guid
+  ' . $where . '
+  ORDER BY datetime DESC LIMIT ' . $from . ',?', [$count]);
+
+  return Response::json($results);
 })
-    ->where('id', '[0-9]+');
+  ->where('id', '[0-9]+');
 
 Route::get('/characters/{guid}', function($guid) {
 
