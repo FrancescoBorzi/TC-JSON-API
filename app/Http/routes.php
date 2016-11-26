@@ -1364,8 +1364,6 @@ Route::get('/characters/{name}', function($name) {
 Route::get('/guilds', function() {
 
   $query = DB::connection('characters')->table("guild");
-  $query->select("guildid", "name");
-  $query->orderBy('name', 'ASC');
 
   if (isset($_GET['take']) && $_GET['take'] != "")
 	$query->take($_GET['take']);
