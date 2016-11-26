@@ -1360,6 +1360,23 @@ Route::get('/characters/{name}', function($name) {
     return Response::json($results);
 });
 
+/* Guild */
+Route::get('/guilds', function() {
+
+  $query = DB::connection('characters')->table("guild");
+  $query->select("guildid", "name");
+  $query->orderBy('name', 'ASC');
+
+  if (isset($_GET['take']) && $_GET['take'] != "")
+	$query->take($_GET['take']);
+  if (isset($_GET['from']) && $_GET['from'] != "")
+	$query->skip($_GET['from']);
+
+  $result = $query->get();
+
+  return Response::json($result);
+});
+
 Route::get('/online', function() {
 
     $results = DB::connection('characters')->select("SELECT t1.guid, t1.name, t3.guildid as guildId, t3.name AS guildName, t1.race, t1.class, t1.gender, t1.level, t1.map, t1.instance_id, t1.zone FROM characters AS t1 LEFT JOIN guild_member AS t2 ON t1.guid = t2.guid LEFT JOIN guild AS t3 ON t2.guildid = t3.guildid WHERE t1.online = 1");
