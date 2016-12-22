@@ -9,7 +9,7 @@
             <div class="content text-center">
                 <div class="title">TrinityCore-JSON-API</div>
                 <div class="item">API version: <strong>{{ $apiVersion }}</strong></div>
-                <div class="item">Database version: <strong>{{ $tdbInfo->db_version }}</strong></div>
+                <div class="item">Database version: <strong>{{ @$tdbInfo->db_version }}</strong></div>
                 <!-- We worked for free to build this software, please do not remove the credit! -->
                 <div class="credit">Created by <a target="_blank" href="https://github.com/ShinDarth"><strong>ShinDarth</strong></a> && <a target="_blank" href="https://github.com/Helias"><strong>Helias</strong></a></div>
             </div>
