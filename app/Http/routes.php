@@ -1844,7 +1844,30 @@ Route::get('topgm/ticket/account', function() {
 });
 
 Route::get('topgm/ticket/account/month/{diff}', function($diff) {
-  $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id WHERE YEAR(FROM_UNIXTIME(t1.lastModifiedTime)) = YEAR(NOW()) AND MONTH(FROM_UNIXTIME(t1.lastModifiedTime)) = MONTH(NOW() + INTERVAL -? MONTH) GROUP BY t3.username ORDER BY count DESC;', [$diff]);
+
+  $month = date('n');
+  $year = date('Y');
+
+  if ($diff > 12) {
+    $diff_years = intval($diff / 12);
+    $year = $year - $diff_years;
+
+    $diff = $diff % 12;
+  }
+
+  if ($diff >= $month) {
+    $year--;
+
+    //$month = 12 - ($diff - $month);
+    // $month is already calculated in the SQL query: MONTH(NOW() + INTERVAL -? MONTH)
+  }
+
+  $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count
+  FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid
+  INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id
+  WHERE YEAR(FROM_UNIXTIME(t1.lastModifiedTime)) = ? AND MONTH(FROM_UNIXTIME(t1.lastModifiedTime)) = MONTH(NOW() + INTERVAL -? MONTH)
+  GROUP BY t3.username
+  ORDER BY count DESC;', [$year, $diff]);
 
   return Response::json($results);
 })
