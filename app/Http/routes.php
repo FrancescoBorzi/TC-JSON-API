@@ -23,7 +23,7 @@ Route::group(["prefix" => "api/v1", "middleware" => "api"], function() {
         Route::any("login", "Auth\AuthController@login");
         Route::any("register", "Auth\AuthController@register");
     });
-    
+
     Route::group(["prefix" => "account", "middleware" => "auth"], function () {
         Route::get("/", "Auth\AccountsController@index");
     });
@@ -53,16 +53,7 @@ Route::group(['prefix' => 'dbc'], function() {
 });
 
 
-Route::get('/dbc/factions/{id}', function($id) {
-
-    if (\App\Helpers\TCAPI::is("wod"))
-        $results = DB::connection('sqlite')->select("SELECT * FROM factions_wod WHERE m_ID = ?", [$id]);
-    else
-        $results = DB::connection('sqlite')->select("SELECT * FROM factions_wotlk WHERE m_ID = ?", [$id]);
-
-    return Response::json($results);
-})
-    ->where('id', '[0-9]+');
+Route::get('/dbc/factions/{id}', 'dbcController@getFactionById')->where('id', '[0-9]+');
 
 Route::get('/dbc/languages/{id}', function($id) {
 
@@ -1324,7 +1315,7 @@ Route::get('/battleground/deserters/recent/{count}', function($count) {
 
   if (isset($_GET['from']) && $_GET['from'] != "")
     $from = $_GET['from'];
-    
+
   if (isset($_GET['name']) && $_GET['name'] != "")
     $where = "WHERE name LIKE '%" . $_GET['name'] . "%'";
 
@@ -1401,7 +1392,7 @@ Route::get('/auction', function() {
         FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
         LEFT JOIN ' . env('DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
         LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);        
+        LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
     }
     else
     {
@@ -1893,4 +1884,3 @@ Route::get('ticket/recent/{count}', function($count) {
 });
 
 Route::get('/', 'WelcomeController@index');
-
