@@ -1389,19 +1389,19 @@ Route::get('/auction', function() {
     if (\App\Helpers\TCAPI::is("wod"))
     {
         $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,count,lastbid,startbid,buyoutprice,deposit,time
-        FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
+        FROM ' . config('app.trinity.DB_CHARACTERS') . '.auctionhouse AS ah
+        LEFT JOIN ' . config('app.trinity.DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
+        LEFT JOIN ' . config('app.trinity.DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
+        LEFT JOIN ' . config('app.trinity.DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
     }
     else
     {
         $result = DB::select('SELECT ah.id,ah.houseid,c.name AS owner,owner_guid,c2.name AS buyname,buyguid,itemEntry,n.name,n.displayid AS icon,count,lastbid,startbid,buyoutprice,deposit,time
-        FROM ' . env('DB_CHARACTERS') . '.auctionhouse AS ah
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
-        LEFT JOIN ' . env('DB_WORLD') .'.item_template AS n ON ins.itemEntry = n.entry
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
-        LEFT JOIN ' . env('DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
+        FROM ' . config('app.trinity.DB_CHARACTERS') . '.auctionhouse AS ah
+        LEFT JOIN ' . config('app.trinity.DB_CHARACTERS') . '.item_instance AS ins ON ah.itemguid = ins.guid
+        LEFT JOIN ' . config('app.trinity.DB_WORLD') .'.item_template AS n ON ins.itemEntry = n.entry
+        LEFT JOIN ' . config('app.trinity.DB_CHARACTERS') . '.characters AS c ON ah.itemowner = c.guid
+        LEFT JOIN ' . config('app.trinity.DB_CHARACTERS') . '.characters AS c2 ON ah.buyguid = c2.guid LIMIT ' . $itemFrom . ' , ' . $numItem);
 
         /* Get icon name */
         $ids = "";
@@ -1556,9 +1556,9 @@ Route::get('/arena_team_member/{arenaTeamId}', function($arenaTeamId) {
 Route::get('/character_achievement', function() {
 
     $results = DB::select('SELECT cha.guid, SUM(Points) AS Points, ch.account, ch.name, ch.level, ch.race, ch.class, ch.gender
-    FROM ' . env('DB_CHARACTERS') . '.character_achievement cha
-    JOIN ' . env('DB_DBC') . '.achievement AS ac ON cha.achievement = ac.ID
-    JOIN ' . env('DB_CHARACTERS') . '.characters AS ch ON cha.guid = ch.guid
+    FROM ' . config('app.trinity.DB_CHARACTERS') . '.character_achievement cha
+    JOIN ' . config('app.trinity.DB_DBC') . '.achievement AS ac ON cha.achievement = ac.ID
+    JOIN ' . config('app.trinity.DB_CHARACTERS') . '.characters AS ch ON cha.guid = ch.guid
     GROUP BY (cha.guid)
     ORDER BY SUM(Points) DESC');
 
@@ -1568,7 +1568,7 @@ Route::get('/character_achievement', function() {
 Route::get('/character_achievement/{guid}', function($guid) {
 
     if (isset($_GET['category']) && $_GET['category'] != "") {
-        $result = DB::select("SELECT ID, Name, Description, Category, Points, icon FROM " . env('DB_DBC') . ".achievement WHERE ID IN (SELECT achievement FROM " . env('DB_CHARACTERS') . ".character_achievement WHERE guid = " . $guid . ") AND category = " . $_GET['category']);
+        $result = DB::select("SELECT ID, Name, Description, Category, Points, icon FROM " . config('app.trinity.DB_DBC') . ".achievement WHERE ID IN (SELECT achievement FROM " . config('app.trinity.DB_CHARACTERS') . ".character_achievement WHERE guid = " . $guid . ") AND category = " . $_GET['category']);
     } else {
         $query = DB::connection('characters')->table('character_achievement');
 	$query->where('guid', '=', $guid);
@@ -1594,23 +1594,23 @@ Route::get('/achievement_progress', function() {
     if (isset($_GET['guid']) && $_GET['guid'] != "" && isset($_GET['category']) && $_GET['category'] != "") {
 
         $result = DB::select("SELECT ach.ID AS ID, acc.ID AS criteria, counter, ach.Name, ach.Description, ach.Points, ach.Category, ach.icon, acc.Quantity
-	FROM " . env('DB_CHARACTERS') . ".character_achievement_progress as ach_progress
-	JOIN " . env('DB_DBC') . ".achievementCriteria AS acc ON ach_progress.criteria = acc.ID
-	JOIN " . env('DB_DBC') . ".achievement AS ach ON ach.ID = acc.Achievement
+	FROM " . config('app.trinity.DB_CHARACTERS') . ".character_achievement_progress as ach_progress
+	JOIN " . config('app.trinity.DB_DBC') . ".achievementCriteria AS acc ON ach_progress.criteria = acc.ID
+	JOIN " . config('app.trinity.DB_DBC') . ".achievement AS ach ON ach.ID = acc.Achievement
 	WHERE ach.category=" . $_GET['category'] . " AND guid=" . $_GET['guid']);
 
     }
     else if (isset($_GET['guid']) && $_GET['guid'] != "") {
 
         $result = DB::select("SELECT acc.ID AS criteria, Achievement AS ID, aca.ID as CategoryID, aca.parentID, aca.Name as Category, aca2.Name as ParentCategory, ac.Name, ac.Description, acc.Description, Faction, Map, icon
-	FROM " . env('DB_DBC') . ".achievementCriteria as acc
-	JOIN " . env('DB_DBC') . ".achievement AS ac ON acc.Achievement = ac.ID
-	JOIN " . env('DB_DBC') . ".achievementCategory AS aca ON ac.category = aca.ID
-	JOIN " . env('DB_DBC') . ".achievementCategory AS aca2 ON aca.ParentID= aca2.ID
+	FROM " . config('app.trinity.DB_DBC') . ".achievementCriteria as acc
+	JOIN " . config('app.trinity.DB_DBC') . ".achievement AS ac ON acc.Achievement = ac.ID
+	JOIN " . config('app.trinity.DB_DBC') . ".achievementCategory AS aca ON ac.category = aca.ID
+	JOIN " . config('app.trinity.DB_DBC') . ".achievementCategory AS aca2 ON aca.ParentID= aca2.ID
 	WHERE acc.ID IN (
 		SELECT ac.criteria
-		FROM " . env('DB_CHARACTERS') . ".character_achievement_progress AS ac
-		JOIN " . env('DB_CHARACTERS') . ".characters AS c ON ac.guid = c.guid
+		FROM " . config('app.trinity.DB_CHARACTERS') . ".character_achievement_progress AS ac
+		JOIN " . config('app.trinity.DB_CHARACTERS') . ".characters AS c ON ac.guid = c.guid
 		WHERE ac.guid = " . $_GET['guid'] . "
 	)");
 
@@ -1829,7 +1829,7 @@ Route::get('/search/guid/', function() {
 /* Other */
 
 Route::get('topgm/ticket/account', function() {
-    $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t3.username ORDER BY count DESC;');
+    $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count FROM `' . config('app.trinity.DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . config('app.trinity.DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . config('app.trinity.DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t3.username ORDER BY count DESC;');
 
     return Response::json($results);
 });
@@ -1854,8 +1854,8 @@ Route::get('topgm/ticket/account/month/{diff}', function($diff) {
   }
 
   $results = DB::select('SELECT t3.username AS account, COUNT(*) AS count
-  FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid
-  INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id
+  FROM `' . config('app.trinity.DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . config('app.trinity.DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid
+  INNER JOIN `' . config('app.trinity.DB_AUTH') . '`.account AS t3 ON t2.account = t3.id
   WHERE YEAR(FROM_UNIXTIME(t1.lastModifiedTime)) = ? AND MONTH(FROM_UNIXTIME(t1.lastModifiedTime)) = MONTH(NOW() + INTERVAL -? MONTH)
   GROUP BY t3.username
   ORDER BY count DESC;', [$year, $diff]);
@@ -1865,7 +1865,7 @@ Route::get('topgm/ticket/account/month/{diff}', function($diff) {
   ->where('diff', '[0-9]+');
 
 Route::get('topgm/ticket/character', function() {
-    $results = DB::select('SELECT t2.name, t3.username AS account, COUNT(*) AS count FROM `' . env('DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . env('DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . env('DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t2.guid ORDER BY count DESC;');
+    $results = DB::select('SELECT t2.name, t3.username AS account, COUNT(*) AS count FROM `' . config('app.trinity.DB_CHARACTERS') . '`.gm_ticket AS t1 INNER JOIN `' . config('app.trinity.DB_CHARACTERS') . '`.characters AS t2 ON t1.resolvedBy = t2.guid INNER JOIN `' . config('app.trinity.DB_AUTH') . '`.account AS t3 ON t2.account = t3.id GROUP BY t2.guid ORDER BY count DESC;');
 
     return Response::json($results);
 });
