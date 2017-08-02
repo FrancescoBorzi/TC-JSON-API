@@ -30,22 +30,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | TrinityCore Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Define TrinityCore specific databases
-    */
-
-    'trinity' => [
-        'DB_WORLD' => env('DB_WORLD'),
-        'DB_CHARACTERS' => env('DB_CHARACTERS'),
-        'DB_AUTH' => env('DB_AUTH'),
-        'DB_HOTFIXES' => env('DB_HOTFIXES'),
-        'DB_DBC' => env('DB_DBC')
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |
